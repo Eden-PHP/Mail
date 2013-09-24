@@ -1,7 +1,7 @@
 {
     "name": "eden-php/mail",
     "type": "library",
-    "description": "POP3, IMAP and SMTP methods for Eden Core",
+    "description": "Eden POP3, IMAP and SMTP component",
     "keywords": ["eden", "library"],
     "homepage": "http://eden-php.com",
     "license": "MIT",
@@ -13,10 +13,10 @@
     ],
     "require": {
         "php": ">=5.3.1",
-		"eden-php/core": ">=1.0.0",
-		"eden-php/system": ">=1.0.0"
+		"eden-php/core": "1.*",
+		"eden-php/system": "1.*"
     },
     "autoload": {
-         "psr-0": { "Eden\\": "library/" }
+         "psr-0": { "Eden\\Mail\\": "" }
     }
 }
