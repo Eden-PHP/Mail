@@ -18,5 +18,6 @@
     },
     "autoload": {
          "psr-0": { "Eden\\Mail\\": "" }
-    }
+    },
+	"target-dir": "Eden/Mail"
 }
