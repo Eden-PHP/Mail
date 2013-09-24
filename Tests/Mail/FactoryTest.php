@@ -7,7 +7,7 @@
  * distributed with this package.
  */
 
-class Eden_Tests_Mail_FactoryTest extends \PHPUnit_Framework_TestCase 
+class Eden_Mail_Tests_Mail_FactoryTest extends \PHPUnit_Framework_TestCase 
 {
     public function testPop3()
     {

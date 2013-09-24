@@ -7,7 +7,7 @@
  * distributed with this package.
  */
 
-class Eden_Tests_Mail_SmtpTest extends \PHPUnit_Framework_TestCase {
+class Eden_Mail_Tests_Mail_SmtpTest extends \PHPUnit_Framework_TestCase {
 	public $smtp;
 	public function setUp() {
 		date_default_timezone_set('GMT');
