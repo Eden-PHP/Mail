@@ -1,5 +1,5 @@
 {
-    "name": "eden-php/mail",
+    "name": "eden/mail",
     "type": "library",
     "description": "Eden POP3, IMAP and SMTP component",
     "keywords": ["eden", "library"],
