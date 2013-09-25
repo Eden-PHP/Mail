@@ -14,6 +14,7 @@
 Very simply, there are four requirements that's needed and all requirements are dependent on your specific email provider. In the figure above we use GMAIL settings as an example. The last argument is a flag. Set it to true if your email provider requires SSL.Now that we have set the connection information, we can now continue to get a list of emails. `Figure 2` shows how we would go about doing that.
 
 **Figure 2. Get Emails**
+
 	$emails = $pop3->getEmails(0, 10); 
 	$count = $pop3->getEmailTotal();
 
