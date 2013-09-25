@@ -262,7 +262,7 @@ In `Figure 16`, we basically laid out all the possible combinations of methods y
 
 1. Fork the main Eden repository (https://github.com/Eden-PHP/Mail)
 2. Fire up your local terminal and clone the *MAIN EDEN REPOSITORY* (git clone git://github.com/Eden-PHP/Mail.git)
-3. Add your *FORKED EDEN REPOSITORY* as a remote (git remote add fork git@github.com:*github_username*/Core.git)
+3. Add your *FORKED EDEN REPOSITORY* as a remote (git remote add fork git@github.com:*github_username*/Mail.git)
 
 ##Making pull requests
 
