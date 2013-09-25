@@ -256,7 +256,7 @@ In `Figure 16`, we basically laid out all the possible combinations of methods y
 
 ====
 
-#Contibuting to Eden
+#Contributing to Eden
 
 ##Setting up your machine with the Eden repository and your fork
 
