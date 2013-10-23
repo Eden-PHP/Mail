@@ -17,6 +17,7 @@ use Eden\System\File;
  * @vendor Eden
  * @package Mail
  * @author Christian Blanquera cblanquera@openovate.com
+ * @author Airon Paul Dumael airon.dumael@gmail.com
  */
 class Smtp extends Base
 {

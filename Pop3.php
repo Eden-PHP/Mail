@@ -15,6 +15,7 @@ namespace Eden\Mail;
  * @vendor Eden
  * @package Mail
  * @author Christian Blanquera cblanquera@openovate.com
+ * @author Airon Paul Dumael airon.dumael@gmail.com
  */
 class Pop3 extends Base
 {
