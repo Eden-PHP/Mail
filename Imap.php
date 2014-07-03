@@ -402,6 +402,18 @@ class Imap extends Base
 
         return $this;
     }
+    
+    /**
+     * Remove an email from a mailbox
+     *
+     * @return Eden\Mail\Imap
+     */
+    public function expunge(){
+        
+        $this->call('expunge');
+                    
+        return $this;
+    }
 
     /**
      * Searches a mailbox for specific emails
