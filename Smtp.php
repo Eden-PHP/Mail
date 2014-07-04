@@ -618,7 +618,7 @@ class Smtp extends Base
      *
      * @return array
      */
-    protected function getAlternativeBody()
+    protected function _getAlternativeBody()
     {
         $plain  = $this->getPlainBody();
         $html   = $this->getHtmlBody();
