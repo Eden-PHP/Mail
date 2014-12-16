@@ -255,10 +255,12 @@ class Mail extends Base
      */
     public function send(array $headers = array())
     {
-        $headers    = $this->getHeaders($headers);
-        $to = $headers['To'];
+        $headersArray = $this->getHeaders($headers);
+        $headers = implode("\n", $headersArray);
+        $to = $headersArray['To'];
         $subject = $this->subject;
-        $body       = $this->getBody();
+        $bodyArray = $this->getBody();
+        $body = implode("\n", $bodyArray);
 
         $res = mail(
             $to, 
