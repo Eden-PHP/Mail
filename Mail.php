@@ -24,7 +24,7 @@ class Mail extends Base
 {
     const TIMEOUT = 30;
 
-    public $LE = "\n";
+    public $LE = "\r\n";
 
     protected $subject  = null;
     protected $from  = array();
