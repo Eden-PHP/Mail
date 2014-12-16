@@ -25,6 +25,7 @@ class Mail extends Base
     const TIMEOUT = 30;
 
     protected $subject  = null;
+    protected $from  = array();
     protected $body = array();
 
     protected $to = array();
@@ -255,75 +256,16 @@ class Mail extends Base
     public function send(array $headers = array())
     {
         $headers    = $this->getHeaders($headers);
+        $to = $headers['To'];
+        $subject = $this->subject;
         $body       = $this->getBody();
 
-        //add from
-        if (!$this->call('MAIL FROM:<' . $this->username . '>', 250, 251)) {
-            $this->disconnect();
-            //throw exception
-            Exception::i()
-                ->setMessage(Exception::SMTP_ADD_EMAIL)
-                ->addVariable($this->username)
-                ->trigger();
-        }
-
-        //add to
-        foreach ($this->to as $email => $name) {
-            if (!$this->call('RCPT TO:<' . $email . '>', 250, 251)) {
-                $this->disconnect();
-                //throw exception
-                Exception::i()
-                    ->setMessage(Exception::SMTP_ADD_EMAIL)
-                    ->addVariable($email)
-                    ->trigger();
-            }
-        }
-
-        //add cc
-        foreach ($this->cc as $email => $name) {
-            if (!$this->call('RCPT TO:<' . $email . '>', 250, 251)) {
-                $this->disconnect();
-                //throw exception
-                Exception::i()
-                    ->setMessage(Exception::SMTP_ADD_EMAIL)
-                    ->addVariable($email)
-                    ->trigger();
-            }
-        }
-
-        //add bcc
-        foreach ($this->bcc as $email => $name) {
-            if (!$this->call('RCPT TO:<' . $email . '>', 250, 251)) {
-                $this->disconnect();
-                //throw exception
-                Exception::i()
-                    ->setMessage(Exception::SMTP_ADD_EMAIL)
-                    ->addVariable($email)
-                    ->trigger();
-            }
-        }
-
-        //start compose
-        if (!$this->call('DATA', 354)) {
-            $this->disconnect();
-            //throw exception
-            Exception::i(Exception::SMTP_DATA)->trigger();
-        }
-
-        //send header data
-        foreach ($headers as $name => $value) {
-            $this->push($name.': '.$value);
-        }
-
-        //send body data
-        foreach ($body as $line) {
-            if (strpos($line, '.') === 0) {
-                // Escape lines prefixed with a '.'
-                $line = '.' . $line;
-            }
-
-            $this->push($line);
-        }
+        $res = mail(
+            $to, 
+            $subject, 
+            $body,
+            $headers
+        );
 
         return $headers;
     }
@@ -361,6 +303,26 @@ class Mail extends Base
     {
         Argument::i()->test(1, 'string');
         $this->subject = $subject;
+        return $this;
+    }
+
+    /**
+     * Adds an email to the bcc list
+     *
+     * @param string email
+     * @param string name
+     * @return this
+     */
+    public function setFrom($email, $name = null)
+    {
+        Argument::i()
+            ->test(1, 'string')
+            ->test(2, 'string', 'null');
+
+        // reset $this->from
+        $this->from = array();
+
+        $this->from[$email] = $name;
         return $this;
     }
 
@@ -426,7 +388,7 @@ class Mail extends Base
      *
      * @return array
      */
-    protected function _getAlternativeBody()
+    protected function getAlternativeBody()
     {
         $plain  = $this->getPlainBody();
         $html   = $this->getHtmlBody();
@@ -503,14 +465,19 @@ class Mail extends Base
             $bcc[] = trim($name.' <'.$email.'>');
         }
 
-        list($account, $suffix) = explode('@', $this->username);
-
         $headers = array(
             'Date'          => $timestamp,
             'Subject'       => $subject,
-            'From'          => '<'.$this->username.'>',
             'To'            => implode(', ', $to));
 
+        if (!empty($this->from)) {
+            list($email, $name) = each($this->from);
+            $headers['From'] = trim($name.' <'.$email.'>');
+
+            //also set reply-to
+            $headers['Reply-To'] = $headers['From'];
+        }
+        
         if (!empty($cc)) {
             $headers['Cc'] = implode(', ', $cc);
         }
@@ -519,11 +486,7 @@ class Mail extends Base
             $headers['Bcc'] = implode(', ', $bcc);
         }
 
-        $headers['Message-ID']  = '<'.md5(uniqid(time())).'.eden@'.$suffix.'>';
-
         $headers['Thread-Topic'] = $this->subject;
-
-        $headers['Reply-To'] = '<'.$this->username.'>';
 
         foreach ($customHeaders as $key => $value) {
             $headers[$key] = $value;
