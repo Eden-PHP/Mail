@@ -264,12 +264,12 @@ class Mail extends Base
         $subject = $this->subject;
         $bodyArray = $this->getBody();
         $body = implode("\n", $bodyArray);
-control()->inspect(array(
-            $to, 
-            $subject, 
-            $body,
-            $headers
-        )); exit;
+
+        $this->debug('To: ' . $to);
+        $this->debug('Subject: ' . $subject);
+        $this->debug('Body: ' . $body);
+        $this->debug('Headers: ' . $headers);
+
         $res = mail(
             $to, 
             $subject, 
