@@ -261,7 +261,7 @@ class Mail extends Base
         $subject = $this->subject;
         $bodyArray = $this->getBody();
         $body = implode("\n", $bodyArray);
-
+        
         $res = mail(
             $to, 
             $subject, 
@@ -269,7 +269,9 @@ class Mail extends Base
             $headers
         );
 
-        return $headers;
+        $headersArray['result'] = $res;
+
+        return $headersArray;
     }
 
     /**
