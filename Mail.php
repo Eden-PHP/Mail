@@ -259,10 +259,12 @@ class Mail extends Base
         $headers = '';
         foreach ($headersArray as $key => $val) {
             // headers to ignore
-            if (in_array(strtolower($key), array('to', 'subject'))) { continue; }
+            if (in_array(strtolower($key), array('to', 'subject', 'mime-version'))) { continue; }
             
             $headers .= $key . ': ' . $val . "\n";
         }
+        $headers .= 'MIME-Version: 1.0';
+
         $to = $headersArray['To'];
         $subject = $this->subject;
         $bodyArray = $this->getBody();
