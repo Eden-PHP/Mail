@@ -258,6 +258,9 @@ class Mail extends Base
         $headersArray = $this->getHeaders($headers);
         $headers = '';
         foreach ($headersArray as $key => $val) {
+            // headers to ignore
+            if (in_array(strtolower($key), array('to', 'subject'))) { continue; }
+            
             $headers .= $key . ': ' . $val . "\n";
         }
         $to = $headersArray['To'];
