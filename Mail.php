@@ -256,12 +256,20 @@ class Mail extends Base
     public function send(array $headers = array())
     {
         $headersArray = $this->getHeaders($headers);
-        $headers = implode("\n", $headersArray);
+        $headers = '';
+        foreach ($headersArray as $key => $val) {
+            $headers .= $key . ': ' . $val . "\n";
+        }
         $to = $headersArray['To'];
         $subject = $this->subject;
         $bodyArray = $this->getBody();
         $body = implode("\n", $bodyArray);
-        
+control()->inspect(array(
+            $to, 
+            $subject, 
+            $body,
+            $headers
+        )); exit;
         $res = mail(
             $to, 
             $subject, 
