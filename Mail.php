@@ -24,6 +24,8 @@ class Mail extends Base
 {
     const TIMEOUT = 30;
 
+    public $LE = "\n";
+
     protected $subject  = null;
     protected $from  = array();
     protected $body = array();
@@ -261,14 +263,13 @@ class Mail extends Base
             // headers to ignore
             if (in_array(strtolower($key), array('to', 'subject', 'mime-version'))) { continue; }
             
-            $headers .= $key . ': ' . $val . "\n";
+            $headers .= $key . ': ' . $val . $this->LE;
         }
         $headers .= 'MIME-Version: 1.0';
 
         $to = $headersArray['To'];
         $subject = $this->subject;
-        $bodyArray = $this->getBody();
-        $body = implode("\n", $bodyArray);
+        $body = $this->getBody();
 
         $this->debug('To: ' . $to);
         $this->debug('Subject: ' . $subject);
@@ -410,24 +411,21 @@ class Mail extends Base
         $plain  = $this->getPlainBody();
         $html   = $this->getHtmlBody();
 
-        $body   = array();
-        $body[] = 'Content-Type: multipart/alternative; boundary="'.$this->boundary[0].'"';
-        $body[] = null;
-        $body[] = '--'.$this->boundary[0];
+        $body = '';
+        $body .= 'Content-Type: multipart/alternative; boundary="'.$this->boundary[0].'"' . $this->LE;
+        $body .= '--'.$this->boundary[0];
+        $body .= $this->LE;
+        $body .= $plain;
+        $body .= $this->LE.$this->LE;
+        
+        $body .= '--'.$this->boundary[0];
+        $body .= $this->LE;
+        $body .= $html;
+        $body .= $this->LE.$this->LE;
 
-        foreach ($plain as $line) {
-            $body[] = $line;
-        }
-
-        $body[] = '--'.$this->boundary[0];
-
-        foreach ($html as $line) {
-            $body[] = $line;
-        }
-
-        $body[] = '--'.$this->boundary[0].'--';
-        $body[] = null;
-        $body[] = null;
+        $body .= $this->LE;
+        $body .= '--'.$this->boundary[0].'--';
+        $body .= $this->LE;
 
         return $body;
     }
@@ -543,17 +541,12 @@ class Mail extends Base
         $charset    = $this->isUtf8($this->body['text/html']) ? 'utf-8' : 'US-ASCII';
         $html       = str_replace("\r", '', trim($this->body['text/html']));
 
-        $encoded = explode("\n", $this->quotedPrintableEncode($html));
-        $body   = array();
-        $body[] = 'Content-Type: text/html; charset='.$charset;
-        $body[] = 'Content-Transfer-Encoding: quoted-printable'."\n";
+        $encoded = $this->quotedPrintableEncode($html);
+        $body   = '';
+        $body .= 'Content-Type: text/html; charset='.$charset . $this->LE;
+        $body .= 'Content-Transfer-Encoding: quoted-printable' . $this->LE;
 
-        foreach ($encoded as $line) {
-            $body[] = $line;
-        }
-
-        $body[] = null;
-        $body[] = null;
+        $body .= $encoded;
 
         return $body;
     }
@@ -567,14 +560,12 @@ class Mail extends Base
     {
         $plain  = $this->getPlainBody();
 
-        $body = array();
-        $body[] = 'Content-Type: multipart/mixed; boundary="'.$this->boundary[1].'"';
-        $body[] = null;
-        $body[] = '--'.$this->boundary[1];
+        $body = '';
+        $body .= 'Content-Type: multipart/mixed; boundary="'.$this->boundary[1].'"' . $this->LE;
+        $body .= '--'.$this->boundary[1] . $this->LE;
 
-        foreach ($plain as $line) {
-            $body[] = $line;
-        }
+        $body .= $plain;
+        $body .= $this->LE.$this->LE;
 
         return $this->addAttachmentBody($body);
     }
@@ -590,17 +581,13 @@ class Mail extends Base
         $plane      = str_replace("\r", '', trim($this->body['text/plain']));
         $count      = ceil(strlen($plane) / 998);
 
-        $body = array();
-        $body[] = 'Content-Type: text/plain; charset='.$charset;
-        $body[] = 'Content-Transfer-Encoding: 7bit';
-        $body[] = null;
-
+        $body = '';
+        $body .= 'Content-Type: text/plain; charset='.$charset . $this->LE;
+        $body .= 'Content-Transfer-Encoding: 7bit' . $this->LE;
+        
         for ($i = 0; $i < $count; $i++) {
-            $body[] = substr($plane, ($i * 998), 998);
+            $body .= substr($plane, ($i * 998), 998);
         }
-
-        $body[] = null;
-        $body[] = null;
 
         return $body;
     }
