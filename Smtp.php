@@ -479,7 +479,7 @@ class Smtp extends Base
         }
 
         //tell server this is the end
-        if (!$this->call("\r\n.\r\n", 250)) {
+        if (!$this->call(".", 250)) {
             $this->disconnect();
             //throw exception
             Exception::i(Exception::SMTP_DATA)->trigger();
@@ -618,7 +618,7 @@ class Smtp extends Base
      *
      * @return array
      */
-    protected function _getAlternativeBody()
+    protected function getAlternativeBody()
     {
         $plain  = $this->getPlainBody();
         $html   = $this->getHtmlBody();
