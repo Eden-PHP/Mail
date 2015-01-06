@@ -91,4 +91,14 @@ class Factory extends Base
 			
 		return Smtp::i($host, $user, $pass, $port, $ssl, $tls);
 	}
+
+	/**
+	 * Returns PHP Mailer
+	 *
+	 * @return Eden_Mail_Mail
+	 */
+	public function mail() 
+	{		
+		return Mail::i();
+	}
 }
