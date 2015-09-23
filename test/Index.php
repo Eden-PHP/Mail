@@ -6,8 +6,7 @@
  * Copyright and license information can be found at LICENSE
  * distributed with this package.
  */
-
-class Eden_Mail_Tests_Mail_FactoryTest extends \PHPUnit_Framework_TestCase
+class EdenMailIndexTest extends PHPUnit_Framework_TestCase
 {
     public function testPop3()
     {

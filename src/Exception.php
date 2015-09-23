@@ -9,8 +9,6 @@
 
 namespace Eden\Mail;
 
-use Eden\Core\Exception as CoreException;
-
 /**
  * The base class for any class handling exceptions. Exceptions
  * allow an application to custom handle errors that would
@@ -20,10 +18,10 @@ use Eden\Core\Exception as CoreException;
  * started to where the program stopped.
  *
  * @vendor Eden
- * @package Mail
+ * @package mail
  * @author Christian Blanquera cblanquera@openovate.com
  */
-class Exception extends CoreException
+class Exception extends \Eden\Core\Exception
 {
 	const SERVER_ERROR 		= 'Problem connecting to %s. Check server, port or ssl settings for your email server.';
 	const LOGIN_ERROR 		= 'Your email provider has rejected your login information. Verify your email and/or password is correct.';

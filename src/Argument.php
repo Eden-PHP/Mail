@@ -1,6 +1,6 @@
 <?php //-->
 /*
- * This file is part of the Mail package of the Eden PHP Library.
+ * This file is part of the System package of the Eden PHP Library.
  * (c) 2013-2014 Openovate Labs
  *
  * Copyright and license information can be found at LICENSE
@@ -8,8 +8,6 @@
  */
 
 namespace Eden\Mail;
-
-use Eden\Core\Argument as CoreArgument;
 
 /**
  * The base class for any class handling exceptions. Exceptions
@@ -20,9 +18,9 @@ use Eden\Core\Argument as CoreArgument;
  * started to where the program stopped.
  *
  * @vendor Eden
- * @package Mail
+ * @package mail
  * @author Christian Blanquera cblanquera@openovate.com
  */
-class Argument extends CoreArgument
+class Argument extends \Eden\Core\Argument
 {
 }

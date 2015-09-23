@@ -9,7 +9,7 @@
 
 namespace Eden\Mail;
 
-use Eden\System\File;
+use Eden\File\Index;
 
 /**
  * General available methods for common SMTP functionality
