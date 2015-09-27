@@ -16,6 +16,6 @@
 		"eden/file": "4.x-dev"
     },
     "autoload": {
-         "psr-4": { "Eden\\File\\": "/src" }
+         "psr-4": { "Eden\\Mail\\": "/src" }
     }
 }
