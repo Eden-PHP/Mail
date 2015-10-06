@@ -240,7 +240,8 @@ class Pop3 extends Base
      */
     public function getEmailTotal()
     {
-        list($messages, $octets) = explode(' ', $this->call('STAT'));
+        @list($messages, $octets) = explode(' ', $this->call('STAT'));
+        $messages = is_numeric($messages) ? $messages : 0;
 
         return $messages;
     }

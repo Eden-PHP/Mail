@@ -23,9 +23,9 @@ namespace Eden\Mail;
  */
 class Exception extends \Eden\Core\Exception
 {
-	const SERVER_ERROR 		= 'Problem connecting to %s. Check server, port or ssl settings for your email server.';
-	const LOGIN_ERROR 		= 'Your email provider has rejected your login information. Verify your email and/or password is correct.';
-	const TLS_ERROR			= 'Problem connecting to %s with TLS on.';
-	const SMTP_ADD_EMAIL 	= 'Adding %s to email failed.'; 
-	const SMTP_DATA 		= 'Server did not allow data to be added.'; 
+    const SERVER_ERROR      = 'Problem connecting to %s. Check server, port or ssl settings for your email server.';
+    const LOGIN_ERROR       = 'Your email provider has rejected your login information. Verify your email and/or password is correct.';
+    const TLS_ERROR             = 'Problem connecting to %s with TLS on.';
+    const SMTP_ADD_EMAIL    = 'Adding %s to email failed.';
+    const SMTP_DATA         = 'Server did not allow data to be added.';
 }

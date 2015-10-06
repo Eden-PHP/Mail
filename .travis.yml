@@ -1,0 +1,11 @@
+language: php
+php:
+- 5.4
+install:
+- pear install pear/PHP_CodeSniffer
+- /home/travis/.phpenv/versions/5.5/bin/composer install
+- phpenv rehash 
+script:
+- phpunit
+- phpcs
+

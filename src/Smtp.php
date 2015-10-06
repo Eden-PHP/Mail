@@ -9,8 +9,6 @@
 
 namespace Eden\Mail;
 
-use Eden\File\Index;
-
 /**
  * General available methods for common SMTP functionality
  *
@@ -828,7 +826,6 @@ class Smtp extends Base
         $now = time();
 
         while ($str = fgets($this->socket, 1024)) {
-
             $data .= $str;
 
             if (substr($str, 3, 1) == ' ' || time() > ($now + self::TIMEOUT)) {
