@@ -477,7 +477,7 @@ class Pop3 extends Base
         }
 
         //if subject is not set
-        if (!isset( $headers1->subject ) || strlen(trim($headers1->subject)) === 0) {
+        if (!isset($headers1->subject) || strlen(trim($headers1->subject)) === 0) {
             //set subject
             $headers1->subject = self::NO_SUBJECT;
         }
@@ -665,7 +665,7 @@ class Pop3 extends Base
             //if encoding is set
             if (isset($head['content-transfer-encoding'])) {
                 //the goal here is to make everytihg utf-8 standard
-                switch(strtolower($head['content-transfer-encoding'])) {
+                switch (strtolower($head['content-transfer-encoding'])) {
                     case 'binary':
                         $body = imap_binary($body);
                         break;
