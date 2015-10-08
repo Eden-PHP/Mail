@@ -9,11 +9,14 @@
          processIsolation="false"
          stopOnFailure="false"
          syntaxCheck="false"
-         bootstrap="Tests/bootstrap.php"
+         bootstrap="test/bootstrap.php"
 >
   <testsuites>
     <testsuite name="Eden Mail Test Suite">
-      <directory>./Tests/Mail</directory>
+	  <file>test/Index.php</file>
+	  <file>test/Smtp.php</file>
+	  <file>test/Imap.php</file>
+	  <file>test/Pop3.php</file>
     </testsuite>
   </testsuites>
 

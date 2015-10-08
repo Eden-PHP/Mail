@@ -1,6 +1,6 @@
 <?php //-->
 /*
- * This file is part of the Mail package of the Eden PHP Library.
+ * This file is part of the System package of the Eden PHP Library.
  * (c) 2013-2014 Openovate Labs
  *
  * Copyright and license information can be found at LICENSE
@@ -9,8 +9,6 @@
 
 namespace Eden\Mail;
 
-use Eden\Core\Base as CoreBase;
-
 /**
  * The base class for all classes wishing to integrate with Eden.
  * Extending this class will allow your methods to seemlessly be
@@ -18,9 +16,9 @@ use Eden\Core\Base as CoreBase;
  * loading patterns.
  *
  * @vendor Eden
- * @package Mail
+ * @package mail
  * @author Christian Blanquera cblanquera@openovate.com
  */
-class Base extends CoreBase
+class Base extends \Eden\Core\Base
 {
 }

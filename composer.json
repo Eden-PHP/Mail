@@ -13,11 +13,13 @@
     ],
     "require": {
         "php": ">=5.3.1",
-		"eden/core": "1.*",
-		"eden/system": "1.*"
+		"eden/core": "4.x-dev",
+		"eden/string": "4.x-dev",
+		"eden/array": "4.x-dev",
+		"eden/path": "4.x-dev",
+		"eden/file": "4.x-dev"
     },
     "autoload": {
-         "psr-0": { "Eden\\Mail\\": "" }
-    },
-	"target-dir": "Eden/Mail"
+         "psr-4": { "Eden\\Mail\\": "src/" }
+    }
 }

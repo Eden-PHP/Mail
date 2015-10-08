@@ -1,6 +1,6 @@
 <?php //-->
 /*
- * This file is part of the Mail package of the Eden PHP Library.
+ * This file is part of the System package of the Eden PHP Library.
  * (c) 2013-2014 Openovate Labs
  *
  * Copyright and license information can be found at LICENSE
@@ -8,8 +8,6 @@
  */
 
 namespace Eden\Mail;
-
-use Eden\Core\Exception as CoreException;
 
 /**
  * The base class for any class handling exceptions. Exceptions
@@ -20,14 +18,9 @@ use Eden\Core\Exception as CoreException;
  * started to where the program stopped.
  *
  * @vendor Eden
- * @package Mail
+ * @package mail
  * @author Christian Blanquera cblanquera@openovate.com
  */
-class Exception extends CoreException
+class Argument extends \Eden\Core\Argument
 {
-	const SERVER_ERROR 		= 'Problem connecting to %s. Check server, port or ssl settings for your email server.';
-	const LOGIN_ERROR 		= 'Your email provider has rejected your login information. Verify your email and/or password is correct.';
-	const TLS_ERROR			= 'Problem connecting to %s with TLS on.';
-	const SMTP_ADD_EMAIL 	= 'Adding %s to email failed.'; 
-	const SMTP_DATA 		= 'Server did not allow data to be added.'; 
 }
