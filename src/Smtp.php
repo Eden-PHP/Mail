@@ -12,9 +12,10 @@ namespace Eden\Mail;
 /**
  * General available methods for common SMTP functionality
  *
- * @vendor Eden
- * @package Mail
- * @author Christian Blanquera cblanquera@openovate.com
+ * @vendor   Eden
+ * @package  Mail
+ * @author   Christian Blanquera <cblanquera@openovate.com>
+ * @standard PSR-2
  * @author Airon Paul Dumael airon.dumael@gmail.com
  */
 class Smtp extends Base
@@ -89,6 +90,7 @@ class Smtp extends Base
      * @param string filename
      * @param string data
      * @param string mime
+     *
      * @return this
      */
     public function addAttachment($filename, $data, $mime = null)
@@ -107,6 +109,7 @@ class Smtp extends Base
      *
      * @param string email
      * @param string name
+     *
      * @return this
      */
     public function addBCC($email, $name = null)
@@ -124,6 +127,7 @@ class Smtp extends Base
      *
      * @param string email
      * @param string name
+     *
      * @return this
      */
     public function addCC($email, $name = null)
@@ -141,6 +145,7 @@ class Smtp extends Base
      *
      * @param string email
      * @param string name
+     *
      * @return this
      */
     public function addTo($email, $name = null)
@@ -267,6 +272,7 @@ class Smtp extends Base
      *
      * @param string message id
      * @param string topic
+     *
      * @return array headers
      */
     public function reply($messageId, $topic = null, array $headers = array())
@@ -395,6 +401,7 @@ class Smtp extends Base
      * Sends an email
      *
      * @param array custom headers
+     *
      * @return array headers
      */
     public function send(array $headers = array())
@@ -494,6 +501,7 @@ class Smtp extends Base
      *
      * @param string body
      * @param bool is this an html body?
+     *
      * @return Eden\Mail\Smtp
      */
     public function setBody($body, $html = false)
@@ -516,6 +524,7 @@ class Smtp extends Base
      * Sets subject
      *
      * @param string subject
+     *
      * @return Eden\Mail\Smtp
      */
     public function setSubject($subject)
@@ -530,6 +539,7 @@ class Smtp extends Base
      * for plain text emails
      *
      * @param array
+     *
      * @return array
      */
     protected function addAttachmentBody(array $body)
@@ -564,6 +574,7 @@ class Smtp extends Base
      *
      * @param string
      * @param bool
+     *
      * @return string|false
      */
     protected function call($command, $code = null)
@@ -671,6 +682,7 @@ class Smtp extends Base
      * Returns the header information
      *
      * @param array
+     *
      * @return array
      */
     protected function getHeaders(array $customHeaders = array())
@@ -842,6 +854,7 @@ class Smtp extends Base
      * Sends out the command
      *
      * @param string
+     *
      * @return bool
      */
     protected function push($command)
@@ -855,6 +868,7 @@ class Smtp extends Base
      * Debugging
      *
      * @param string
+     *
      * @return Eden\Mail\Smtp
      */
     private function debug($string)
@@ -914,6 +928,7 @@ class Smtp extends Base
      *
      * @param string
      * @param int line length
+     *
      * @return string
      */
     private function quotedPrintableEncode($input, $line_max = 250)

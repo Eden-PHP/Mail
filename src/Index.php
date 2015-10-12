@@ -12,9 +12,10 @@ namespace Eden\Mail;
 /**
  * Mail Factory Class
  *
- * @vendor Eden
- * @package Mail
- * @author Christian Blanquera cblanquera@openovate.com
+ * @vendor   Eden
+ * @package  Mail
+ * @author   Christian Blanquera <cblanquera@openovate.com>
+ * @standard PSR-2
  */
 class Index extends Base
 {
@@ -29,6 +30,7 @@ class Index extends Base
      * @param int|null
      * @param bool
      * @param bool
+     *
      * @return Eden\Mail\Imap
      */
     public function imap($host, $user, $pass, $port = null, $ssl = false, $tls = false)
@@ -53,6 +55,7 @@ class Index extends Base
      * @param int|null
      * @param bool
      * @param bool
+     *
      * @return Eden\Mail\Pop3
      */
     public function pop3($host, $user, $pass, $port = null, $ssl = false, $tls = false)
@@ -77,6 +80,7 @@ class Index extends Base
      * @param int|null
      * @param bool
      * @param bool
+     *
      * @return Eden_Mail_Smtp
      */
     public function smtp($host, $user, $pass, $port = null, $ssl = false, $tls = false)

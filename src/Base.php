@@ -1,9 +1,9 @@
 <?php //-->
-/*
- * This file is part of the System package of the Eden PHP Library.
- * (c) 2013-2014 Openovate Labs
+/**
+ * This file is part of the Eden package.
+ * (c) 2014-2016 Openovate Labs
  *
- * Copyright and license information can be found at LICENSE
+ * Copyright and license information can be found at LICENSE.txt
  * distributed with this package.
  */
 
@@ -15,9 +15,10 @@ namespace Eden\Mail;
  * overloaded and overrided as well as provide some basic class
  * loading patterns.
  *
- * @vendor Eden
- * @package mail
- * @author Christian Blanquera cblanquera@openovate.com
+ * @vendor   Eden
+ * @package  mail
+ * @author   Christian Blanquera <cblanquera@openovate.com>
+ * @standard PSR-2
  */
 class Base extends \Eden\Core\Base
 {

@@ -12,9 +12,10 @@ namespace Eden\Mail;
 /**
  * General available methods for common IMAP functionality
  *
- * @vendor Eden
- * @package Mail
- * @author Christian Blanquera cblanquera@openovate.com
+ * @vendor   Eden
+ * @package  Mail
+ * @author   Christian Blanquera <cblanquera@openovate.com>
+ * @standard PSR-2
  * @author Airon Paul Dumael airon.dumael@gmail.com
  */
 class Imap extends Base
@@ -184,6 +185,7 @@ class Imap extends Base
      * @param number start
      * @param number range
      * @param bool add threads
+     *
      * @return array
      */
     public function getEmails($start = 0, $range = 10, $body = false)
@@ -317,6 +319,7 @@ class Imap extends Base
      * Returns a list of emails given a uid or set of uids
      *
      * @param number|array uid/s
+     *
      * @return array
      */
     public function getUniqueEmails($uid, $body = false)
@@ -361,6 +364,7 @@ class Imap extends Base
      *
      * @param number uid
      * @param string mailbox
+     *
      * @return Eden\Mail\Imap
      */
     public function move($uid, $mailbox)
@@ -384,6 +388,7 @@ class Imap extends Base
      * Remove an email from a mailbox
      *
      * @param number uid
+     *
      * @return Eden\Mail\Imap
      */
     public function remove($uid)
@@ -425,6 +430,7 @@ class Imap extends Base
      * @param number start
      * @param number range
      * @param bool or search?
+     *
      * @return array
      */
     public function search(
@@ -540,6 +546,7 @@ class Imap extends Base
      * Returns the total amount of emails
      *
      * @param array filter
+     *
      * @return number
      */
     public function searchTotal(array $filter, $or = false)
@@ -593,6 +600,7 @@ class Imap extends Base
      * before getting a list of mails
      *
      * @param string name of mailbox
+     *
      * @return false|Eden\Mail\Imap
      */
     public function setActiveMailbox($mailbox)
@@ -633,6 +641,7 @@ class Imap extends Base
      *
      * @param string
      * @param array
+     *
      * @return string|false
      */
     protected function call($command, $parameters = array())
@@ -666,6 +675,7 @@ class Imap extends Base
      * Returns the response when all of it is received
      *
      * @param string
+     *
      * @return string
      */
     protected function receive($sentTag)
@@ -691,6 +701,7 @@ class Imap extends Base
      *
      * @param string
      * @param array
+     *
      * @return bool
      */
     protected function send($command, $parameters = array())
@@ -728,6 +739,7 @@ class Imap extends Base
      * Debugging
      *
      * @param string
+     *
      * @return Eden\Mail\Imap
      */
     private function debug($string)
@@ -746,6 +758,7 @@ class Imap extends Base
      * compared to how PHP escapes code
      *
      * @param string
+     *
      * @return string
      */
     private function escape($string)
@@ -773,6 +786,7 @@ class Imap extends Base
      * @param string
      * @param string|null
      * @param array
+     *
      * @return array
      */
     private function getEmailFormat($email, $uniqueId = null, array $flags = array())
@@ -969,6 +983,7 @@ class Imap extends Base
      * @param string
      * @param array
      * @param bool
+     *
      * @return array
      */
     private function getEmailResponse($command, $parameters = array(), $first = false)
@@ -1086,6 +1101,7 @@ class Imap extends Base
      * array key value format
      *
      * @param string
+     *
      * @return array
      */
     private function getHeaders($rawData)
@@ -1131,6 +1147,7 @@ class Imap extends Base
      * considering arrays inside of arrays
      *
      * @param array
+     *
      * @return string
      */
     private function getList($array)
@@ -1149,6 +1166,7 @@ class Imap extends Base
      *
      * @param string
      * @param array
+     *
      * @return array
      */
     private function getParts($content, array $parts = array())

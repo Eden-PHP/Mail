@@ -12,9 +12,10 @@ namespace Eden\Mail;
 /**
  * General available methods for common POP3 functionality
  *
- * @vendor Eden
- * @package Mail
- * @author Christian Blanquera cblanquera@openovate.com
+ * @vendor   Eden
+ * @package  Mail
+ * @author   Christian Blanquera <cblanquera@openovate.com>
+ * @standard PSR-2
  * @author Airon Paul Dumael airon.dumael@gmail.com
  */
 class Pop3 extends Base
@@ -188,6 +189,7 @@ class Pop3 extends Base
      *
      * @param number start
      * @param number range
+     *
      * @return array
      */
     public function getEmails($start = 0, $range = 10)
@@ -251,6 +253,7 @@ class Pop3 extends Base
      *
      * @param number uid
      * @param string mailbox
+     *
      * @return Eden\Mail\Pop3
      */
     public function remove($msgno)
@@ -280,6 +283,7 @@ class Pop3 extends Base
      *
      * @param string
      * @param bool
+     *
      * @return string|false
      */
     protected function call($command, $multiline = false)
@@ -295,6 +299,7 @@ class Pop3 extends Base
      * Returns the response when all of it is received
      *
      * @param string
+     *
      * @return string
      */
     protected function receive($multiline = false)
@@ -331,6 +336,7 @@ class Pop3 extends Base
      * Sends out the command
      *
      * @param string
+     *
      * @return bool
      */
     protected function send($command)
@@ -344,6 +350,7 @@ class Pop3 extends Base
      * Debugging
      *
      * @param string
+     *
      * @return Eden\Mail\Imap
      */
     private function debug($string)
@@ -363,6 +370,7 @@ class Pop3 extends Base
      *
      * @param string
      * @param array
+     *
      * @return array
      */
     private function getEmailFormat($email, array $flags = array())
@@ -556,6 +564,7 @@ class Pop3 extends Base
      * array key value format
      *
      * @param string
+     *
      * @return array
      */
     private function getHeaders($rawData)
@@ -602,6 +611,7 @@ class Pop3 extends Base
      *
      * @param string
      * @param array
+     *
      * @return array
      */
     private function getParts($content, array $parts = array())
