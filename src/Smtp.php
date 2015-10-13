@@ -1,9 +1,9 @@
 <?php //-->
-/*
- * This file is part of the Mail package of the Eden PHP Library.
- * (c) 2013-2014 Openovate Labs
+/**
+ * This file is part of the Eden PHP Library.
+ * (c) 2014-2016 Openovate Labs
  *
- * Copyright and license information can be found at LICENSE
+ * Copyright and license information can be found at LICENSE.txt
  * distributed with this package.
  */
 
@@ -15,43 +15,100 @@ namespace Eden\Mail;
  * @vendor   Eden
  * @package  Mail
  * @author   Christian Blanquera <cblanquera@openovate.com>
+ * @author   Airon Paul Dumael <airon.dumael@gmail.com>
  * @standard PSR-2
- * @author Airon Paul Dumael airon.dumael@gmail.com
  */
 class Smtp extends Base
 {
+    /**
+     * @const int TIMEOUT Connection timeout
+     */
     const TIMEOUT = 30;
 
+    /**
+     * @var string $host The SMTP Host
+     */
     protected $host = null;
+       
+    /**
+     * @var string|null $port The SMTP port
+     */
     protected $port = null;
+       
+    /**
+     * @var bool $ssl Whether to use SSL
+     */
     protected $ssl = false;
+       
+    /**
+     * @var bool $tls Whether to use TLS
+     */
     protected $tls = false;
-
+       
+    /**
+     * @var string|null $username The mailbox user name
+     */
     protected $username = null;
+       
+    /**
+     * @var string|null $password The mailbox password
+     */
     protected $password = null;
-
+       
+    /**
+     * @var [RESOURCE] $socket The socket connection
+     */
     protected $socket = null;
+       
+    /**
+     * @var array $boundary The list of boundaries
+     */
     protected $boundary = array();
-
+       
+    /**
+     * @var array $subject The mail subject
+     */
     protected $subject  = null;
+       
+    /**
+     * @var array $body Body content types
+     */
     protected $body = array();
-
+       
+    /**
+     * @var array $to The list of main recipients
+     */
     protected $to = array();
+       
+    /**
+     * @var array $cc The list of carbon copies
+     */
     protected $cc = array();
+       
+    /**
+     * @var array $bcc The list of BCCs sorry i forgot what this stood for :(
+     */
     protected $bcc = array();
+       
+    /**
+     * @var array $attachments The list of attachments
+     */
     protected $attachments = array();
 
+    /**
+     * @var bool $debugging If true outputs the logs
+     */
     private $debugging = false;
 
     /**
      * Constructor - Store connection information
      *
-     * @param string
-     * @param string
-     * @param string
-     * @param int|null
-     * @param bool
-     * @param bool
+     * @param *string  $host The SMTP host
+     * @param *string  $user The mailbox user name
+     * @param *string  $pass The mailbox password
+     * @param int|null $port The SMTP port
+     * @param bool     $ssl  Whether to use SSL
+     * @param bool     $tls  Whether to use TLS
      */
     public function __construct(
         $host,
@@ -87,11 +144,11 @@ class Smtp extends Base
     /**
      * Adds an attachment to the email
      *
-     * @param string filename
-     * @param string data
-     * @param string mime
+     * @param *string $filename The name of the file
+     * @param *string $data     The file data
+     * @param string  $mime     The mime type
      *
-     * @return this
+     * @return Eden\Mail\Smtp
      */
     public function addAttachment($filename, $data, $mime = null)
     {
@@ -107,10 +164,10 @@ class Smtp extends Base
     /**
      * Adds an email to the bcc list
      *
-     * @param string email
-     * @param string name
+     * @param *string $email Email address
+     * @param string  $name  Name of person
      *
-     * @return this
+     * @return Eden\Mail\Smtp
      */
     public function addBCC($email, $name = null)
     {
@@ -125,10 +182,10 @@ class Smtp extends Base
     /**
      * Adds an email to the cc list
      *
-     * @param string email
-     * @param string name
+     * @param *string $email Email address
+     * @param string  $name  Name of person
      *
-     * @return this
+     * @return Eden\Mail\Smtp
      */
     public function addCC($email, $name = null)
     {
@@ -143,10 +200,10 @@ class Smtp extends Base
     /**
      * Adds an email to the to list
      *
-     * @param string email
-     * @param string name
+     * @param *string $email Email address
+     * @param string  $name  Name of person
      *
-     * @return this
+     * @return Eden\Mail\Smtp
      */
     public function addTo($email, $name = null)
     {
@@ -160,6 +217,9 @@ class Smtp extends Base
 
     /**
      * Connects to the server
+     *
+     * @param int  $timeout The connection timeout
+     * @param bool $test    Whether to output the logs
      *
      * @return Eden\Mail\Smtp
      */
@@ -270,8 +330,9 @@ class Smtp extends Base
     /**
      * Reply to an existing email
      *
-     * @param string message id
-     * @param string topic
+     * @param string $message The mail id to reply to
+     * @param string $topic   The topic ID
+     * @param array  $headers Custom headers
      *
      * @return array headers
      */
@@ -400,7 +461,7 @@ class Smtp extends Base
     /**
      * Sends an email
      *
-     * @param array custom headers
+     * @param array  $headers Custom headers
      *
      * @return array headers
      */
@@ -499,8 +560,8 @@ class Smtp extends Base
     /**
      * Sets body
      *
-     * @param string body
-     * @param bool is this an html body?
+     * @param *string $body The raw body
+     * @param bool    $html Is this an html body?
      *
      * @return Eden\Mail\Smtp
      */
@@ -523,7 +584,7 @@ class Smtp extends Base
     /**
      * Sets subject
      *
-     * @param string subject
+     * @param string $subject The title of this message
      *
      * @return Eden\Mail\Smtp
      */
@@ -538,7 +599,7 @@ class Smtp extends Base
      * Adds the attachment string body
      * for plain text emails
      *
-     * @param array
+     * @param *array $body The body types
      *
      * @return array
      */
@@ -572,8 +633,8 @@ class Smtp extends Base
     /**
      * Send it out and return the response
      *
-     * @param string
-     * @param bool
+     * @param *string  $command The raw SMTP command
+     * @param int|null $code    The command code
      *
      * @return string|false
      */
@@ -681,7 +742,7 @@ class Smtp extends Base
     /**
      * Returns the header information
      *
-     * @param array
+     * @param array $customHeaders Custom headers to include
      *
      * @return array
      */
@@ -853,7 +914,7 @@ class Smtp extends Base
     /**
      * Sends out the command
      *
-     * @param string
+     * @param *string $command The raw SMTP command
      *
      * @return bool
      */
@@ -867,7 +928,7 @@ class Smtp extends Base
     /**
      * Debugging
      *
-     * @param string
+     * @param *string $string The string to output
      *
      * @return Eden\Mail\Smtp
      */
@@ -900,6 +961,8 @@ class Smtp extends Base
     /**
      * Returns true if there's UTF encodeing
      *
+     * @param *string The string to test
+     *
      * @return bool
      */
     private function isUtf8($string)
@@ -926,8 +989,8 @@ class Smtp extends Base
     /**
      * Returns a printable encode version of the body
      *
-     * @param string
-     * @param int line length
+     * @param *string $input    The string to encode
+     * @param int     $line_max line length
      *
      * @return string
      */

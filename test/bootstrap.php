@@ -1,9 +1,9 @@
 <?php //-->
-/*
- * This file is part of the Core package of the Eden PHP Library.
- * (c) 2012-2013 Openovate Labs
+/**
+ * This file is part of the Eden PHP Library.
+ * (c) 2014-2016 Openovate Labs
  *
- * Copyright and license information can be found at LICENSE
+ * Copyright and license information can be found at LICENSE.txt
  * distributed with this package.
  */
 ob_start();

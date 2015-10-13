@@ -1,9 +1,9 @@
 <?php //-->
-/*
- * This file is part of the Mail package of the Eden PHP Library.
- * (c) 2013-2014 Openovate Labs
+/**
+ * This file is part of the Eden PHP Library.
+ * (c) 2014-2016 Openovate Labs
  *
- * Copyright and license information can be found at LICENSE
+ * Copyright and license information can be found at LICENSE.txt
  * distributed with this package.
  */
 
@@ -15,36 +15,80 @@ namespace Eden\Mail;
  * @vendor   Eden
  * @package  Mail
  * @author   Christian Blanquera <cblanquera@openovate.com>
+ * @author   Airon Paul Dumael <airon.dumael@gmail.com>
  * @standard PSR-2
- * @author Airon Paul Dumael airon.dumael@gmail.com
  */
 class Pop3 extends Base
 {
+    /**
+     * @const int TIMEOUT Connection timeout
+     */
     const TIMEOUT = 30;
+
+    /**
+     * @const string NO_SUBJECT Default subject
+     */
     const NO_SUBJECT = '(no subject)';
 
+    /**
+     * @var string $host The POP3 Host
+     */
     protected $host = null;
+       
+    /**
+     * @var string|null $port The POP3 port
+     */
     protected $port = null;
+       
+    /**
+     * @var bool $ssl Whether to use SSL
+     */
     protected $ssl = false;
+       
+    /**
+     * @var bool $tls Whether to use TLS
+     */
     protected $tls = false;
-
+       
+    /**
+     * @var string|null $username The mailbox user name
+     */
     protected $username = null;
+       
+    /**
+     * @var string|null $password The mailbox password
+     */
     protected $password = null;
+       
+    /**
+     * @var string|null $timestamp Default timestamp
+     */
     protected $timestamp = null;
-
+       
+    /**
+     * @var [RESOURCE] $socket The socket connection
+     */
     protected $socket = null;
+       
+    /**
+     * @var bool $loggedin If you are actually logged in
+     */
     protected $loggedin = false;
+       
+    /**
+     * @var bool $debugging If true outputs the logs
+     */
     private $debugging = false;
 
     /**
      * Constructor - Store connection information
      *
-     * @param string
-     * @param string
-     * @param string
-     * @param int|null
-     * @param bool
-     * @param bool
+     * @param *string  $host The POP3 host
+     * @param *string  $user The mailbox user name
+     * @param *string  $pass The mailbox password
+     * @param int|null $port The POP3 port
+     * @param bool     $ssl  Whether to use SSL
+     * @param bool     $tls  Whether to use TLS
      */
     public function __construct(
         $host,
@@ -78,6 +122,8 @@ class Pop3 extends Base
 
     /**
      * Connects to the server
+     *
+     * @param bool $test Whether to output the logs
      *
      * @return Eden\Mail\Pop3
      */
@@ -187,8 +233,8 @@ class Pop3 extends Base
     /**
      * Returns a list of emails given the range
      *
-     * @param number start
-     * @param number range
+     * @param number $start Pagination start
+     * @param number $range Pagination range
      *
      * @return array
      */
@@ -251,8 +297,7 @@ class Pop3 extends Base
     /**
      * Remove an email from a mailbox
      *
-     * @param number uid
-     * @param string mailbox
+     * @param *number $msgno The mail UID to remove
      *
      * @return Eden\Mail\Pop3
      */
@@ -281,8 +326,8 @@ class Pop3 extends Base
     /**
      * Send it out and return the response
      *
-     * @param string
-     * @param bool
+     * @param *string $command   The raw POP3 command
+     * @param bool    $multiline Whether to expect a multiline response
      *
      * @return string|false
      */
@@ -298,7 +343,7 @@ class Pop3 extends Base
     /**
      * Returns the response when all of it is received
      *
-     * @param string
+     * @param bool $multiline Whether to expect a multiline response
      *
      * @return string
      */
@@ -335,7 +380,7 @@ class Pop3 extends Base
     /**
      * Sends out the command
      *
-     * @param string
+     * @param *string $command The raw POP3 command
      *
      * @return bool
      */
@@ -349,7 +394,7 @@ class Pop3 extends Base
     /**
      * Debugging
      *
-     * @param string
+     * @param *string $string The string to output
      *
      * @return Eden\Mail\Imap
      */
@@ -368,8 +413,8 @@ class Pop3 extends Base
      * Secret Sauce - Transform an email string
      * response to array key value format
      *
-     * @param string
-     * @param array
+     * @param *string $email The actual email
+     * @param array   $flags Any mail flags
      *
      * @return array
      */
@@ -563,7 +608,7 @@ class Pop3 extends Base
      * Returns email reponse headers
      * array key value format
      *
-     * @param string
+     * @param *string $rawData The data to parse
      *
      * @return array
      */
@@ -609,8 +654,8 @@ class Pop3 extends Base
      * Splits out body parts
      * ie. plain, HTML, attachment
      *
-     * @param string
-     * @param array
+     * @param string $content The content to parse
+     * @param array  $parts   The existing parts
      *
      * @return array
      */
