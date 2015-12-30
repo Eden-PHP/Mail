@@ -4,6 +4,7 @@
 ====
 
 - [Install](#install)
+- [Adding to existing project](#add)
 - [Introduction](#intro)
 - [IMAP](#imap)
 - [POP3](#pop3)
@@ -18,7 +19,11 @@
 `composer install eden/mail`
 
 ====
-
+<a name="add"></a>
+#### Add to existing project
+```bash
+composer require eden/mail
+```
 <a name="intro"></a>
 ## Introduction
 
