@@ -438,11 +438,7 @@ class Imap extends Base
             $this->connect();
         }
 
-        if (!is_array($uid)) {
-            $uid = array($uid);
-        }
-
-        $this->call('UID COPY '.implode(',', $uid).' '.$mailbox);
+        $this->call('UID COPY '.$uid.' '.$mailbox);
 
         return $this->remove($uid);
     }
@@ -462,11 +458,7 @@ class Imap extends Base
             $this->connect();
         }
 
-        if (!is_array($uid)) {
-            $uid = array($uid);
-        }
-
-        $this->call('UID STORE '.implode(',', $uid).' FLAGS.SILENT \Deleted');
+        $this->call('UID STORE '.$uid.' FLAGS.SILENT \Deleted');
 
         return $this;
     }

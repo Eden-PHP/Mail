@@ -243,8 +243,8 @@ class Smtp extends Base
 
         if (!$this->socket || strlen($errstr) > 0 || $errno > 0) {
             //throw exception
-            Argument::i()
-                ->setMessage(Argument::SERVER_ERROR)
+            Exception::i()
+                ->setMessage(Exception::SERVER_ERROR)
                 ->addVariable($host.':'.$this->port)
                 ->trigger();
         }
@@ -255,8 +255,8 @@ class Smtp extends Base
         && !$this->call('HELO '.$_SERVER['HTTP_HOST'], 250)) {
             $this->disconnect();
             //throw exception
-            Argument::i()
-                ->setMessage(Argument::SERVER_ERROR)
+            Exception::i()
+                ->setMessage(Exception::SERVER_ERROR)
                 ->addVariable($host.':'.$this->port)
                 ->trigger();
         }
