@@ -109,7 +109,7 @@ Every mail server we looked at has the *INBOX* folder. So when in doubt, we woul
 **Figure 4. Set Active Mailbox FIRST!**
 
 ```
-echo $imap->setMailboxes('INBOX')->getActiveInbox(); //--> INBOX 
+echo $imap->setActiveMailbox('INBOX')->getActiveMailbox(); //--> INBOX 
 ```
 
 ### Emails
