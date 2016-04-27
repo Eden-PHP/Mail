@@ -245,7 +245,6 @@ class Pop3 extends Base
             ->test(2, 'int');
 
         $total = $this->getEmailTotal();
-        $total = $total['messages'];
 
         if ($total == 0) {
             return array();
