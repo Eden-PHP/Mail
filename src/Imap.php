@@ -745,7 +745,6 @@ class Imap extends Base
             if ($receivedTag == 'TAG'.$sentTag) {
                 return $this->buffer;
             }
-
         }
 
         return null;

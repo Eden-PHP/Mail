@@ -245,7 +245,6 @@ class Pop3 extends Base
             ->test(2, 'int');
 
         $total = $this->getEmailTotal();
-        $total = $total['messages'];
 
         if ($total == 0) {
             return array();
@@ -317,7 +316,6 @@ class Pop3 extends Base
 
         foreach ($msgno as $number) {
             $this->call('DELE '.$number);
-
         }
 
         return $this;
@@ -663,7 +661,6 @@ class Pop3 extends Base
     {
         //separate the head and the body
         list($head, $body) = preg_split("/\n\s*\n/", $content, 2);
-        //front()->output($head);
         //get the headers
         $head = $this->getHeaders($head);
         //if content type is not set
@@ -697,7 +694,7 @@ class Pop3 extends Base
             $attr = explode('=', $attr, 2);
             if (count($attr) > 1) {
                 list($key, $value) = $attr;
-                $extra[$key] = $value;
+                $extra[strtolower($key)] = $value;
             }
             unset($extra[$i]);
         }
