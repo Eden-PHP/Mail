@@ -316,7 +316,6 @@ class Pop3 extends Base
 
         foreach ($msgno as $number) {
             $this->call('DELE '.$number);
-
         }
 
         return $this;
