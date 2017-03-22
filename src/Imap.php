@@ -438,7 +438,28 @@ class Imap extends Base
             $this->connect();
         }
 
-        $this->call('UID COPY '.$uid.' '.$mailbox);
+        $this->call('UID MOVE '.$uid.' '.$mailbox);
+
+        return $this->remove($uid);
+    }
+    
+        /**
+     * Copy an email to another mailbox
+     *
+     * @param *number $uid     The mail unique ID
+     * @param *string $mailbox The mailbox destination
+     *
+     * @return Eden\Mail\Imap
+     */
+    public function copy($uid, $mailbox)
+    {
+        Argument::i()->test(1, 'int', 'string')->test(2, 'string');
+
+        if (!$this->socket) {
+            $this->connect();
+        }
+
+        $this->call('UID MOVE '.$uid.' '.$mailbox);
 
         return $this->remove($uid);
     }
