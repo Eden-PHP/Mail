@@ -438,9 +438,7 @@ class Imap extends Base
             $this->connect();
         }
 
-        $this->call('UID MOVE '.$uid.' '.$mailbox);
-
-        return $this->remove($uid);
+        return $this->call('UID MOVE '.$uid.' '.$mailbox);
     }
     
         /**
@@ -459,7 +457,7 @@ class Imap extends Base
             $this->connect();
         }
 
-        $this->call('UID MOVE '.$uid.' '.$mailbox);
+        $this->call('UID COPY '.$uid.' '.$mailbox);
 
         return $this->remove($uid);
     }
