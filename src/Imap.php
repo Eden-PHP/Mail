@@ -423,7 +423,7 @@ class Imap extends Base
     }
 
     /**
-     * Moves an email to another mailbox
+     * Moves an email from folder to other folder
      *
      * @param *number $uid     The mail unique ID
      * @param *string $mailbox The mailbox destination
