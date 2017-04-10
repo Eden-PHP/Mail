@@ -1059,6 +1059,15 @@ class Imap extends Base
             //if the line starts with a fetch
             //it means it's the end of getting an email
             if (strpos($line, 'FETCH') !== false && strpos($line, 'TAG'.$this->tag) === false) {
+                /**
+                 * simple regex to match the FETCH line
+                 * used to skip over a $line that hasn't got to do with the FETCH or TAG line
+                 */
+                preg_match('/^\* [0-9]+/', $line, $arr);
+                // no match, there isn't sufficient information to parse the email. Skipping.
+                // potential exception: undefined $flags
+                if (empty($arr)) continue;
+
                 //if there is email data
                 if (!empty($email)) {
                     //create the email format and add it to emails
