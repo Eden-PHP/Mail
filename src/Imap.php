@@ -1066,7 +1066,9 @@ class Imap extends Base
                 preg_match('/^\* [0-9]+/', $line, $arr);
                 // no match, there isn't sufficient information to parse the email. Skipping.
                 // potential exception: undefined $flags
-                if (empty($arr)) continue;
+                if (empty($arr)) {
+                    continue;
+                }
 
                 //if there is email data
                 if (!empty($email)) {
