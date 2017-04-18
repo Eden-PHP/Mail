@@ -29,72 +29,72 @@ class Imap extends Base
      * @const string NO_SUBJECT Default subject
      */
     const NO_SUBJECT = '(no subject)';
-       
+
     /**
      * @var string $host The IMAP Host
      */
     protected $host = null;
-       
+
     /**
      * @var string|null $port The IMAP port
      */
     protected $port = null;
-       
+
     /**
      * @var bool $ssl Whether to use SSL
      */
     protected $ssl = false;
-       
+
     /**
      * @var bool $tls Whether to use TLS
      */
     protected $tls = false;
-       
+
     /**
      * @var string|null $username The mailbox user name
      */
     protected $username = null;
-       
+
     /**
      * @var string|null $password The mailbox password
      */
     protected $password = null;
-       
+
     /**
      * @var int $tag The tag number
      */
     protected $tag = 0;
-       
+
     /**
      * @var int $total The total main in mailbox
      */
     protected $total = 0;
-       
+
     /**
      * @var int $next for pagination
      */
     protected $next = 0;
-       
+
     /**
      * @var string|null $buffer Mail body
      */
     protected $buffer = null;
-       
+
     /**
      * @var [RESOURCE] $socket The socket connection
      */
     protected $socket = null;
-       
+
     /**
      * @var string|null $mailbox The mailbox name
      */
     protected $mailbox = null;
-       
+
     /**
      * @var array $mailboxes The list of mailboxes
      */
     protected $mailboxes = array();
-       
+
     /**
      * @var bool $debugging If true outputs the logs
      */
@@ -462,7 +462,7 @@ class Imap extends Base
 
         return $this;
     }
-    
+
     /**
      * Remove an email from a mailbox
      *
@@ -470,9 +470,8 @@ class Imap extends Base
      */
     public function expunge()
     {
-        
         $this->call('expunge');
-                    
+
         return $this;
     }
 
@@ -890,7 +889,12 @@ class Imap extends Base
             }
         }
 
-        $sender['email'] = $headers1->from[0]->mailbox . '@' . $headers1->from[0]->host;
+        if (isset($headers1->from[0]) && is_object($headers1->from[0])) {
+            $sender['email'] = $headers1->from[0]->mailbox . '@' . $headers1->from[0]->host;
+        }
+        else {
+            $sender['email'] = 'unknown@localhost.localdomain';
+        }
 
         //set the to
         if (isset($headers1->to)) {
@@ -1059,6 +1063,15 @@ class Imap extends Base
             //if the line starts with a fetch
             //it means it's the end of getting an email
             if (strpos($line, 'FETCH') !== false && strpos($line, 'TAG'.$this->tag) === false) {
+                /**
+                 * simple regex to match the FETCH line
+                 * used to skip over a $line that hasn't got to do with the FETCH or TAG line
+                 */
+                preg_match('/^\* [0-9]+/', $line, $arr);
+                // no match, there isn't sufficient information to parse the email. Skipping.
+                // potential exception: undefined $flags
+                if (empty($arr)) continue;
+
                 //if there is email data
                 if (!empty($email)) {
                     //create the email format and add it to emails
@@ -1359,7 +1372,12 @@ if (!function_exists('imap_rfc822_parse_headers')) {
         $headers->to = $headers->cc = $headers->bcc = array();
 
         preg_match('#Message\-(ID|id|Id)\:([^\n]*)#', $header, $ID);
-        $headers->ID = trim($ID[2]);
+        if (isset($ID[2])){
+            $headers->ID = trim($ID[2]);
+        }
+        else {
+            $headers->ID = 'Message-ID: <unknown>';
+        }
         unset($ID);
 
         preg_match('#\nTo\:([^\n]*)#', $header, $to);
@@ -1372,7 +1390,12 @@ if (!function_exists('imap_rfc822_parse_headers')) {
 
         $headers->from = array(new \stdClass());
         preg_match('#\nFrom\:([^\n]*)#', $header, $from);
-        $headers->from[0] = imap_rfc822_parse_headers_decode(trim($from[1]));
+        if (isset($from[1])) {
+            $headers->from[0] = imap_rfc822_parse_headers_decode(trim($from[1]));
+        }
+        else {
+            $headers->from[0] = 'unknown@localhost.localdomain';
+        }
 
         preg_match('#\nCc\:([^\n]*)#', $header, $cc);
         if (isset($cc[1])) {
@@ -1391,15 +1414,23 @@ if (!function_exists('imap_rfc822_parse_headers')) {
         }
 
         preg_match('#\nSubject\:([^\n]*)#', $header, $subject);
-        $headers->subject = trim($subject[1]);
-        unset($subject);
+        if (isset($subject[1])) {
+            $headers->subject = trim($subject[1]);
+            unset($subject);
+        }
 
         preg_match('#\nDate\:([^\n]*)#', $header, $date);
-        $date = substr(trim($date[0]), 6);
+        if (isset($date[0])) {
+            $date = substr(trim($date[0]), 6);
 
-        $date = preg_replace('/\(.*\)/', '', $date);
 
-        $headers->date = trim($date);
+            $date = preg_replace('/\(.*\)/', '', $date);
+
+            $headers->date = trim($date);
+        }
+        else {
+            $headers->date = date('d-m-Y H:i:s');
+        }
         unset($date);
 
         foreach ($ccs as $k => $cc) {
