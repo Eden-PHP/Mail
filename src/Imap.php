@@ -674,9 +674,14 @@ class Imap extends Base
             } else if (strpos($line, 'UIDNEXT') !== false) {
                 $explode = explode(' ', $line, 5);
                 // the list function expects 5 items
-                if (count($explode) < 5) array_push($explode, "The next unique identifier value");
-
-                list($star, $ok, $next, $this->next, $type) = explode(' ', $line, 5);
+                if (count($explode) < 5) {
+                    array_push($explode, "The next unique identifier value");
+	                list($star, $ok, $next, $this->next, $type) = $explode;
+                }
+                else {
+	                list($star, $ok, $next, $this->next, $type) = explode(' ', $line,
+		                5);
+                }
                 $this->next = substr($this->next, 0, -1);
             }
 
