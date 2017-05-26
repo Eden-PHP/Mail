@@ -748,7 +748,11 @@ class Imap extends Base
         $start = time();
 
         while (time() < ($start + self::TIMEOUT)) {
-            list($receivedTag, $line) = explode(' ', $this->getLine(), 2);
+        	$explode = explode(' ', $this->getLine(), 2);
+        	if (count($explode) < 2) {
+        		array_push($explode, "OK []\r\n");
+	        }
+            list($receivedTag, $line) = $explode;
             $this->buffer[] = trim($receivedTag . ' ' . $line);
             if ($receivedTag == 'TAG'.$sentTag) {
                 return $this->buffer;
