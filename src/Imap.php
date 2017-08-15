@@ -1435,7 +1435,7 @@ class ImapUtf7
     private static $imap_base64 =
         'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+,';
 
-    static private function encodeB64Imap($s)
+    private static function encodeB64Imap($s)
     {
         $a   = 0;
         $al  = 0;
@@ -1458,7 +1458,7 @@ class ImapUtf7
         return $res;
     }
 
-    static private function encode_utf8_char($w)
+    private static function encode_utf8_char($w)
     {
         if ($w & 0x80000000) {
             return '';
@@ -1487,7 +1487,7 @@ class ImapUtf7
         return $res;
     }
 
-    static private function decodeB64Imap($s)
+    private static function decodeB64Imap($s)
     {
         $a   = 0;
         $al  = 0;
@@ -1525,7 +1525,7 @@ class ImapUtf7
         return $r2;
     }
 
-    static function encode($s)
+    public static function encode($s)
     {
         $n   = strlen($s);
         $err = 0;
@@ -1594,7 +1594,7 @@ class ImapUtf7
         return $res;
     }
 
-    static function decode($s)
+    public static function decode($s)
     {
         $res = '';
         $n   = strlen($s);
