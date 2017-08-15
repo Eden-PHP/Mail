@@ -1432,7 +1432,7 @@ if (!function_exists('imap_rfc822_parse_headers')) {
 /** http://php.net/manual/pt_BR/function.imap-utf7-decode.php#116677 */
 class ImapUtf7
 {
-    static $imap_base64 =
+    private static $imap_base64 =
         'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+,';
 
     static private function encodeB64Imap($s)
