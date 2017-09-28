@@ -1,5 +1,5 @@
 {
-    "name": "eden/mail",
+    "name": "leonardoweslei/eden-mail",
     "type": "library",
     "description": "Eden POP3, IMAP and SMTP component",
     "keywords": ["eden", "library"],
@@ -11,15 +11,9 @@
             "email": "cblanquera@openovate.com"
         }
     ],
-    "repositories": [
-        {
-            "type": "git",
-            "url": "https://github.com/beeproger/core"
-        }
-    ],
     "require": {
         "php": ">=5.4.1",
-		"eden/core": "4.0.3.1",
+		"eden/core": "4.*",
 		"eden/string": "4.*",
 		"eden/array": "4.*",
 		"eden/path": "4.*",
