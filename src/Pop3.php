@@ -315,7 +315,6 @@ class Pop3 extends Base
         }
 
         foreach ($msgno as $number) {
-            $this->call('DELE '.$number);
         }
 
         return $this;
@@ -571,7 +570,8 @@ class Pop3 extends Base
             'to'            => $recipientsTo,
             'cc'            => $recipientsCc,
             'bcc'           => $recipientsBcc,
-            'attachment'    => $attachment);
+            'attachment'    => $attachment,
+            'raw'           => $email);
 
         if (trim($body) && $body != ')') {
             //get the body parts
