@@ -1,15 +1,19 @@
 {
-    "name": "eden/mail",
+    "name": "bladeroot/mail",
     "type": "library",
     "description": "Eden POP3, IMAP and SMTP component",
-    "keywords": ["eden", "library"],
+    "keywords": ["eden", "library", "bladeroot", "pop3", "imap", "smtp", "php"],
     "homepage": "http://eden-php.com",
     "license": "MIT",
     "authors": [
         {
             "name": "Christian Blanquera",
             "email": "cblanquera@openovate.com"
-        }
+        },
+	{
+	    "name": "Christian Blanquera",
+	    "email": "bladeroot@gmail.com"
+	}
     ],
     "require": {
         "php": ">=5.4.1",
@@ -20,6 +24,6 @@
 		"eden/file": "4.*"
     },
     "autoload": {
-         "psr-4": { "Eden\\Mail\\": "src/" }
+         "psr-4": { "Bladeroot\\Mail\\": "src/" }
     }
 }
