@@ -15,7 +15,7 @@
 <a name="install"></a>
 ## Install
 
-`composer install eden/mail`
+`composer install bladeroot/mail`
 
 ====
 
@@ -27,21 +27,21 @@ Eden sports the three common ways to interact with mail servers including SMTP, 
 **Figure 1. Factory**
 
 ```
-$imap = eden('mail')->imap(
+$imap = bladeroot('mail')->imap(
 	'imap.gmail.com', 
 	'your_email@gmail.com', 
 	'[YOUR PASSWORD]', 
 	993, 
 	true);
 
-$pop3 = eden('mail')->pop3(
+$pop3 = bladeroot('mail')->pop3(
 	'pop.gmail.com', 
 	'your_email@gmail.com', 
 	'[YOUR PASSWORD]', 
 	995, 
 	true);
 
-$smtp = eden('mail')->smtp(
+$smtp = bladeroot('mail')->smtp(
 	'smtp.gmail.com', 
 	'your_email@gmail.com', 
 	'[YOUR PASSWORD]', 
@@ -61,7 +61,7 @@ For all three protocols there are four requirements that's needed and all requir
 **Figure 2. Setting up the IMAP Object**
 
 ```
-$imap = eden('mail')->imap(
+$imap = bladeroot('mail')->imap(
 	'imap.gmail.com', 
 	'your_email@gmail.com', 
 	'[YOUR PASSWORD]', 
@@ -239,7 +239,7 @@ $imap->disconnect();
 **Figure 11. Setting up the POP3 Object**
 
 ```
-$pop3 = eden('mail')->pop3(
+$pop3 = bladeroot('mail')->pop3(
 	'pop.gmail.com', 
 	'your_email@gmail.com', 
 	'[YOUR PASSWORD]', 
@@ -280,7 +280,7 @@ SMTP in Eden is relatively easier. We use `fsocket()` rather than PHP's built in
 **Figure 15. Setting up the SMTP Object**
 
 ```
-$smtp = eden('mail')->smtp(
+$smtp = bladeroot('mail')->smtp(
 	'smtp.gmail.com', 
 	'your_email@gmail.com', 
 	'[YOUR PASSWORD]', 
