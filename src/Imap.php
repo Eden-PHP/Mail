@@ -7,7 +7,7 @@
  * distributed with this package.
  */
 
-namespace Eden\Mail;
+namespace Bladeroot\Mail;
 
 /**
  * General available methods for common IMAP functionality
@@ -29,72 +29,72 @@ class Imap extends Base
      * @const string NO_SUBJECT Default subject
      */
     const NO_SUBJECT = '(no subject)';
-       
+
     /**
      * @var string $host The IMAP Host
      */
     protected $host = null;
-       
+
     /**
      * @var string|null $port The IMAP port
      */
     protected $port = null;
-       
+
     /**
      * @var bool $ssl Whether to use SSL
      */
     protected $ssl = false;
-       
+
     /**
      * @var bool $tls Whether to use TLS
      */
     protected $tls = false;
-       
+
     /**
      * @var string|null $username The mailbox user name
      */
     protected $username = null;
-       
+
     /**
      * @var string|null $password The mailbox password
      */
     protected $password = null;
-       
+
     /**
      * @var int $tag The tag number
      */
     protected $tag = 0;
-       
+
     /**
      * @var int $total The total main in mailbox
      */
     protected $total = 0;
-       
+
     /**
      * @var int $next for pagination
      */
     protected $next = 0;
-       
+
     /**
      * @var string|null $buffer Mail body
      */
     protected $buffer = null;
-       
+
     /**
      * @var [RESOURCE] $socket The socket connection
      */
     protected $socket = null;
-       
+
     /**
      * @var string|null $mailbox The mailbox name
      */
     protected $mailbox = null;
-       
+
     /**
      * @var array $mailboxes The list of mailboxes
      */
     protected $mailboxes = array();
-       
+
     /**
      * @var bool $debugging If true outputs the logs
      */
@@ -462,7 +462,7 @@ class Imap extends Base
 
         return $this;
     }
-    
+
     /**
      * Remove an email from a mailbox
      *
@@ -470,9 +470,9 @@ class Imap extends Base
      */
     public function expunge()
     {
-        
+
         $this->call('expunge');
-                    
+
         return $this;
     }
 

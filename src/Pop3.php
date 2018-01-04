@@ -7,7 +7,7 @@
  * distributed with this package.
  */
 
-namespace Eden\Mail;
+namespace Bladeroot\Mail;
 
 /**
  * General available methods for common POP3 functionality
@@ -34,47 +34,47 @@ class Pop3 extends Base
      * @var string $host The POP3 Host
      */
     protected $host = null;
-       
+
     /**
      * @var string|null $port The POP3 port
      */
     protected $port = null;
-       
+
     /**
      * @var bool $ssl Whether to use SSL
      */
     protected $ssl = false;
-       
+
     /**
      * @var bool $tls Whether to use TLS
      */
     protected $tls = false;
-       
+
     /**
      * @var string|null $username The mailbox user name
      */
     protected $username = null;
-       
+
     /**
      * @var string|null $password The mailbox password
      */
     protected $password = null;
-       
+
     /**
      * @var string|null $timestamp Default timestamp
      */
     protected $timestamp = null;
-       
+
     /**
      * @var [RESOURCE] $socket The socket connection
      */
     protected $socket = null;
-       
+
     /**
      * @var bool $loggedin If you are actually logged in
      */
     protected $loggedin = false;
-       
+
     /**
      * @var bool $debugging If true outputs the logs
      */

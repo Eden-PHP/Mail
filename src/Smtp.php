@@ -7,7 +7,7 @@
  * distributed with this package.
  */
 
-namespace Eden\Mail;
+namespace Bladeroot\Mail;
 
 /**
  * General available methods for common SMTP functionality
@@ -29,67 +29,67 @@ class Smtp extends Base
      * @var string $host The SMTP Host
      */
     protected $host = null;
-       
+
     /**
      * @var string|null $port The SMTP port
      */
     protected $port = null;
-       
+
     /**
      * @var bool $ssl Whether to use SSL
      */
     protected $ssl = false;
-       
+
     /**
      * @var bool $tls Whether to use TLS
      */
     protected $tls = false;
-       
+
     /**
      * @var string|null $username The mailbox user name
      */
     protected $username = null;
-       
+
     /**
      * @var string|null $password The mailbox password
      */
     protected $password = null;
-       
+
     /**
      * @var [RESOURCE] $socket The socket connection
      */
     protected $socket = null;
-       
+
     /**
      * @var array $boundary The list of boundaries
      */
     protected $boundary = array();
-       
+
     /**
      * @var array $subject The mail subject
      */
     protected $subject  = null;
-       
+
     /**
      * @var array $body Body content types
      */
     protected $body = array();
-       
+
     /**
      * @var array $to The list of main recipients
      */
     protected $to = array();
-       
+
     /**
      * @var array $cc The list of carbon copies
      */
     protected $cc = array();
-       
+
     /**
      * @var array $bcc The list of BCCs sorry i forgot what this stood for :(
      */
     protected $bcc = array();
-       
+
     /**
      * @var array $attachments The list of attachments
      */

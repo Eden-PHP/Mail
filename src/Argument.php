@@ -7,7 +7,7 @@
  * distributed with this package.
  */
 
-namespace Eden\Mail;
+namespace Bladeroot\Mail;
 
 /**
  * Argument Class

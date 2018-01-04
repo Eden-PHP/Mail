@@ -7,7 +7,7 @@
  * distributed with this package.
  */
 
-namespace Eden\Mail;
+namespace Bladeroot\Mail;
 
 /**
  * Mail Factory Class
@@ -23,7 +23,7 @@ class Index extends Base
      * @const int INSTANCE Flag that designates singleton when using ::i()
      */
     const INSTANCE = 1;
-    
+
     /**
      * Returns Mail IMAP
      *
@@ -45,10 +45,10 @@ class Index extends Base
             ->test(4, 'int', 'null')
             ->test(5, 'bool')
             ->test(6, 'bool');
-            
+
         return Imap::i($host, $user, $pass, $port, $ssl, $tls);
     }
-    
+
     /**
      * Returns Mail POP3
      *
@@ -70,10 +70,10 @@ class Index extends Base
             ->test(4, 'int', 'null')
             ->test(5, 'bool')
             ->test(6, 'bool');
-        
+
         return Pop3::i($host, $user, $pass, $port, $ssl, $tls);
     }
-    
+
     /**
      * Returns Mail SMTP
      *
@@ -95,7 +95,7 @@ class Index extends Base
             ->test(4, 'int', 'null')
             ->test(5, 'bool')
             ->test(6, 'bool');
-            
+
         return Smtp::i($host, $user, $pass, $port, $ssl, $tls);
     }
 }
