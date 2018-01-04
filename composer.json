@@ -10,18 +10,18 @@
             "name": "Christian Blanquera",
             "email": "cblanquera@openovate.com"
         },
-	{
-	    "name": "Christian Blanquera",
-	    "email": "bladeroot@gmail.com"
-	}
+    {
+        "name": "Christian Blanquera",
+        "email": "bladeroot@gmail.com"
+    }
     ],
     "require": {
         "php": ">=5.4.1",
-		"eden/core": "4.*",
-		"eden/string": "4.*",
-		"eden/array": "4.*",
-		"eden/path": "4.*",
-		"eden/file": "4.*"
+        "eden/core": "4.*",
+        "eden/string": "4.*",
+        "eden/array": "4.*",
+        "eden/path": "4.*",
+        "eden/file": "4.*"
     },
     "autoload": {
          "psr-4": { "Bladeroot\\Mail\\": "src/" }
