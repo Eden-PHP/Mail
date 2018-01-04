@@ -304,8 +304,6 @@ class Pop3 extends Base
     {
         Argument::i()->test(1, 'int', 'string');
 
-        $this->call("DELE $msgno");
-
         if (!$this->loggedin || !$this->socket) {
             return false;
         }
@@ -571,7 +569,8 @@ class Pop3 extends Base
             'to'            => $recipientsTo,
             'cc'            => $recipientsCc,
             'bcc'           => $recipientsBcc,
-            'attachment'    => $attachment);
+            'attachment'    => $attachment,
+            'raw'           => $email);
 
         if (trim($body) && $body != ')') {
             //get the body parts
