@@ -716,7 +716,7 @@ class Pop3 extends Base
             //if name is set, it's an attachment
             //if encoding is set
             if (isset($head['content-transfer-encoding'])) {
-                if(is_array($head['content-transfer-encoding'])) {
+                if(is_array($head['content-transfer-encoding']) === true) {
                     $transferEncoding = $head['content-transfer-encoding'][1];
                 } else {
                     $transferEncoding = $head['content-transfer-encoding'];
