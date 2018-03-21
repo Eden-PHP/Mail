@@ -1410,7 +1410,10 @@ if (!function_exists('imap_rfc822_parse_headers')) {
         }
 
         preg_match('#\nSubject\:([^\n]*)#', $header, $subject);
-        $headers->subject = trim($subject[1]);
+        $headers->subject = 'no subject';
+        if (isset($subject[1])) {
+            $headers->subject = trim($subject[1]);
+        }
         unset($subject);
 
         preg_match('#\nDate\:([^\n]*)#', $header, $date);
