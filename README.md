@@ -317,11 +317,11 @@ $smtp->disconnect();
 ====
 
 <a name="contributing"></a>
-#Contributing to Eden
+# Contributing to Eden
 
 Contributions to *Eden* are following the Github work flow. Please read up before contributing.
 
-##Setting up your machine with the Eden repository and your fork
+## Setting up your machine with the Eden repository and your fork
 
 1. Fork the repository
 2. Fire up your local terminal create a new branch from the `v4` branch of your 
@@ -332,7 +332,7 @@ fork with a branch name describing what your changes are.
     - improvement
 3. Make your changes. Always make sure to sign-off (-s) on all commits made (git commit -s -m "Commit message")
 
-##Making pull requests
+## Making pull requests
 
 1. Please ensure to run `phpunit` before making a pull request.
 2. Push your code to your remote forked version.
