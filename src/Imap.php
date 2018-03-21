@@ -371,7 +371,18 @@ class Imap extends Base
                 continue;
             }
 
-            $mailboxes[] = $line[count($line)-2];
+            $mailbox = trim($line[count($line) - 2]);
+
+            if ($mailbox == "/" || $mailbox == "") {
+                $mailbox = $line[count($line) - 1];
+            }
+
+            //Fix mailbox name encoded with utf7
+            $mailbox = ImapUtf7::decode(trim($mailbox));
+            //Decoding utf8 string result
+            $mailbox = utf8_decode($mailbox);
+
+            $mailboxes[] = $mailbox;
         }
 
         return $mailboxes;
