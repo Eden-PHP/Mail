@@ -1,7 +1,7 @@
 ![logo](http://eden.openovate.com/assets/images/cloud-social.png) Eden Mail
-====
+----
 [![Build Status](https://api.travis-ci.org/Eden-PHP/Mail.png)](https://travis-ci.org/Eden-PHP/Mail)
-====
+----
 
 - [Install](#install)
 - [Introduction](#intro)
@@ -10,14 +10,40 @@
 - [SMTP](#smtp)
 - [Contributing](#contributing)
 
-====
+----
 
 <a name="install"></a>
 ## Install
 
 `composer install eden/mail`
 
-====
+In order to use
+
+----
+
+## Enable Eden
+
+The following documentation uses `eden()` in its example reference. Enabling this function requires an extra step as descirbed in this section which is not required if you access this package using the following.
+
+```
+Eden\Core\Control::i();
+```
+
+When using composer, there is not an easy way to access functions from packages. As a workaround, adding this constant in your code will allow `eden()` to be available after. 
+
+```
+Eden::DECORATOR;
+```
+
+For example:
+
+```
+Eden::DECORATOR;
+
+eden()->inspect('Hello World');
+```
+
+----
 
 <a name="intro"></a>
 ## Introduction
@@ -28,30 +54,30 @@ Eden sports the three common ways to interact with mail servers including SMTP, 
 
 ```
 $imap = eden('mail')->imap(
-	'imap.gmail.com', 
-	'your_email@gmail.com', 
-	'[YOUR PASSWORD]', 
-	993, 
-	true);
+    'imap.gmail.com', 
+    'your_email@gmail.com', 
+    '[YOUR PASSWORD]', 
+    993, 
+    true);
 
 $pop3 = eden('mail')->pop3(
-	'pop.gmail.com', 
-	'your_email@gmail.com', 
-	'[YOUR PASSWORD]', 
-	995, 
-	true);
+    'pop.gmail.com', 
+    'your_email@gmail.com', 
+    '[YOUR PASSWORD]', 
+    995, 
+    true);
 
 $smtp = eden('mail')->smtp(
-	'smtp.gmail.com', 
-	'your_email@gmail.com', 
-	'[YOUR PASSWORD]', 
-	465, 
-	true);
+    'smtp.gmail.com', 
+    'your_email@gmail.com', 
+    '[YOUR PASSWORD]', 
+    465, 
+    true);
 ```
 
 For all three protocols there are four requirements that's needed and all requirements are dependent on your specific email provider. In the figure above we use GMAIL settings as an example. The last argument is a flag. Set it to true if your email provider requires SSL.
 
-====
+----
 
 <a name="imap"></a>
 ## IMAP
@@ -62,11 +88,11 @@ For all three protocols there are four requirements that's needed and all requir
 
 ```
 $imap = eden('mail')->imap(
-	'imap.gmail.com', 
-	'your_email@gmail.com', 
-	'[YOUR PASSWORD]', 
-	993, 
-	true);
+    'imap.gmail.com', 
+    'your_email@gmail.com', 
+    '[YOUR PASSWORD]', 
+    993, 
+    true);
 ```
 Very simply, there are four requirements that's needed and all requirements are dependent on your specific email provider. In the figure above we use GMAIL settings as an example. The last argument is a flag. Set it to true if your email provider requires SSL.
 
@@ -84,23 +110,23 @@ Executing the above command will give you the following results.
 
 ```
 Array (
-	[0] => Deleted Messages
-	[1] => Drafts
-	[2] => INBOX
-	[3] => Junk E-mail
-	[4] => Notes
-	[5] => Sent Messages
-	[6] => Trash
-	[9] => [Gmail]/All Mail
-	[10] => [Gmail]/Drafts
-	[11] => [Gmail]/Important
-	[12] => [Gmail]/Personal
-	[13] => [Gmail]/Sent Mail
-	[14] => [Gmail]/Spam
-	[15] => [Gmail]/Starred
-	[16] => [Gmail]/System
-	[17] => [Gmail]/Trash
-	[18] => [Gmail]/Unsorted
+    [0] => Deleted Messages
+    [1] => Drafts
+    [2] => INBOX
+    [3] => Junk E-mail
+    [4] => Notes
+    [5] => Sent Messages
+    [6] => Trash
+    [9] => [Gmail]/All Mail
+    [10] => [Gmail]/Drafts
+    [11] => [Gmail]/Important
+    [12] => [Gmail]/Personal
+    [13] => [Gmail]/Sent Mail
+    [14] => [Gmail]/Spam
+    [15] => [Gmail]/Starred
+    [16] => [Gmail]/System
+    [17] => [Gmail]/Trash
+    [18] => [Gmail]/Unsorted
 )
 ```
 
@@ -129,23 +155,23 @@ Executing the above figure would yield you results similar to the snippet below.
 
 ```
 Array (
-	[0] => Array
-		(
-			[id] => <50041ab1c9383_178f6b3294527919f@job01.tmail>
-			[parent] => 
-			[topic] => Trending Startups and Updates
-			[mailbox] => INBOX
-			[uid] => 22363
-			[date] => 1342446257
-			[subject] => Trending Startups and Updates
-			[from] => Array( [name] => AngelList [email] => noreply@angel.co )
-			[flags] => Array ( [0] => seen )
-			[to] => Array ( [0] => Array( [email] => youremail@gmail.com ) )
-			[cc] => Array()
-			[bcc] => Array()
-		)
-	 
-	...
+    [0] => Array
+        (
+            [id] => <50041ab1c9383_178f6b3294527919f@job01.tmail>
+            [parent] => 
+            [topic] => Trending Startups and Updates
+            [mailbox] => INBOX
+            [uid] => 22363
+            [date] => 1342446257
+            [subject] => Trending Startups and Updates
+            [from] => Array( [name] => AngelList [email] => noreply@angel.co )
+            [flags] => Array ( [0] => seen )
+            [to] => Array ( [0] => Array( [email] => youremail@gmail.com ) )
+            [cc] => Array()
+            [bcc] => Array()
+        )
+     
+    ...
 )
 ```
 
@@ -182,30 +208,30 @@ Search is confined to the emails in the active mailbox. This is an IMAP standard
 
 The combinations of search queries can be referenced below:
 
-	ALL - return all messages matching the rest of the criteria
-	ANSWERED - match messages with the \\ANSWERED flag set
-	BCC "string" - match messages with "string" in the Bcc: field
-	BEFORE "date" - match messages with Date: before "date"
-	BODY "string" - match messages with "string" in the body of the message
-	CC "string" - match messages with "string" in the Cc: field
-	DELETED - match deleted messages
-	FLAGGED - match messages with the \\FLAGGED (sometimes referred to as Important or Urgent) flag set
-	FROM "string" - match messages with "string" in the From: field
-	KEYWORD "string" - match messages with "string" as a keyword
-	NEW - match new messages
-	OLD - match old messages
-	ON "date" - match messages with Date: matching "date"
-	RECENT - match messages with the \\RECENT flag set
-	SEEN - match messages that have been read (the \\SEEN flag is set)
-	SINCE "date" - match messages with Date: after "date"
-	SUBJECT "string" - match messages with "string" in the Subject:
-	TEXT "string" - match messages with text "string"
-	TO "string" - match messages with "string" in the To:
-	UNANSWERED - match messages that have not been answered
-	UNDELETED - match messages that are not deleted
-	UNFLAGGED - match messages that are not flagged
-	UNKEYWORD "string" - match messages that do not have the keyword "string"
-	UNSEEN - match messages which have not been read yet
+    ALL - return all messages matching the rest of the criteria
+    ANSWERED - match messages with the \\ANSWERED flag set
+    BCC "string" - match messages with "string" in the Bcc: field
+    BEFORE "date" - match messages with Date: before "date"
+    BODY "string" - match messages with "string" in the body of the message
+    CC "string" - match messages with "string" in the Cc: field
+    DELETED - match deleted messages
+    FLAGGED - match messages with the \\FLAGGED (sometimes referred to as Important or Urgent) flag set
+    FROM "string" - match messages with "string" in the From: field
+    KEYWORD "string" - match messages with "string" as a keyword
+    NEW - match new messages
+    OLD - match old messages
+    ON "date" - match messages with Date: matching "date"
+    RECENT - match messages with the \\RECENT flag set
+    SEEN - match messages that have been read (the \\SEEN flag is set)
+    SINCE "date" - match messages with Date: after "date"
+    SUBJECT "string" - match messages with "string" in the Subject:
+    TEXT "string" - match messages with text "string"
+    TO "string" - match messages with "string" in the To:
+    UNANSWERED - match messages that have not been answered
+    UNDELETED - match messages that are not deleted
+    UNFLAGGED - match messages that are not flagged
+    UNKEYWORD "string" - match messages that do not have the keyword "string"
+    UNSEEN - match messages which have not been read yet
 
 ### Actions
 
@@ -229,7 +255,7 @@ $imap->remove(22363, true);
 $imap->disconnect(); 
 ```
 
-====
+----
 
 <a name="pop3"></a>
 ## POP3
@@ -240,11 +266,11 @@ $imap->disconnect();
 
 ```
 $pop3 = eden('mail')->pop3(
-	'pop.gmail.com', 
-	'your_email@gmail.com', 
-	'[YOUR PASSWORD]', 
-	995, 
-	true);
+    'pop.gmail.com', 
+    'your_email@gmail.com', 
+    '[YOUR PASSWORD]', 
+    995, 
+    true);
 ```
 
 Very simply, there are four requirements that's needed and all requirements are dependent on your specific email provider. In the figure above we use GMAIL settings as an example. The last argument is a flag. Set it to true if your email provider requires SSL.Now that we have set the connection information, we can now continue to get a list of emails. `Figure 12` shows how we would go about doing that.
@@ -256,7 +282,7 @@ $emails = $pop3->getEmails(0, 10);
 $count = $pop3->getEmailTotal();
 ```
 
-Executing the above figure would return you a list of emails as well as the total count. Some other 	actions you would probably like to perform is removing an email. The following figures shows basically the rest of the possible actions you can perform with *Eden*.
+Executing the above figure would return you a list of emails as well as the total count. Some other     actions you would probably like to perform is removing an email. The following figures shows basically the rest of the possible actions you can perform with *Eden*.
 
 **Figure 13. Delete Email**
 
@@ -270,7 +296,7 @@ $pop3->remove(100);
 $pop3->disconnect(); 
 ```
 
-====
+----
 
 <a name="smtp"></a>
 ## SMTP
@@ -281,11 +307,11 @@ SMTP in Eden is relatively easier. We use `fsocket()` rather than PHP's built in
 
 ```
 $smtp = eden('mail')->smtp(
-	'smtp.gmail.com', 
-	'your_email@gmail.com', 
-	'[YOUR PASSWORD]', 
-	465, 
-	true);
+    'smtp.gmail.com', 
+    'your_email@gmail.com', 
+    '[YOUR PASSWORD]', 
+    465, 
+    true);
 ```
 
 Very simply, there are four requirements that's needed and all requirements are dependent on your specific email provider. In the figure above we use GMAIL settings as an example. The last argument is a flag. Set it to true if your email provider requires SSL. The next part is simply send your email.
@@ -294,16 +320,16 @@ Very simply, there are four requirements that's needed and all requirements are 
 
 ```
 $smtp->setSubject('Welcome!')
-	->setBody('<p>Hello you!</p>', true)
-	->setBody('Hello you!')
-	->addTo('email1@gmail.com')
-	->addTo('email2@gmail.com')
-	->addCC('email3@gmail.com')
-	->addCC('email4@gmail.com')
-	->addBCC('email5@gmail.com')
-	->addBCC('email6@gmail.com')
-	->addAttachment('file.jpg', '/path/to/file.jpg', 'mime-type')
-	->send();
+    ->setBody('<p>Hello you!</p>', true)
+    ->setBody('Hello you!')
+    ->addTo('email1@gmail.com')
+    ->addTo('email2@gmail.com')
+    ->addCC('email3@gmail.com')
+    ->addCC('email4@gmail.com')
+    ->addBCC('email5@gmail.com')
+    ->addBCC('email6@gmail.com')
+    ->addAttachment('file.jpg', '/path/to/file.jpg', 'mime-type')
+    ->send();
 ```
 
 In `Figure 16`, we basically laid out all the possible combinations of methods you can use to send email. It's important to set the `addTo()` method at least once.
@@ -314,7 +340,7 @@ In `Figure 16`, we basically laid out all the possible combinations of methods y
 $smtp->disconnect(); 
 ```
 
-====
+----
 
 <a name="contributing"></a>
 # Contributing to Eden
