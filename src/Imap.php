@@ -423,7 +423,7 @@ class Imap extends Base
     }
 
     /**
-     * Moves an email to another mailbox
+     * Moves an email from folder to other folder
      *
      * @param *number $uid     The mail unique ID
      * @param *string $mailbox The mailbox destination
@@ -431,6 +431,25 @@ class Imap extends Base
      * @return Eden\Mail\Imap
      */
     public function move($uid, $mailbox)
+    {
+        Argument::i()->test(1, 'int', 'string')->test(2, 'string');
+
+        if (!$this->socket) {
+            $this->connect();
+        }
+
+        return $this->call('UID MOVE '.$uid.' '.$mailbox);
+    }
+    
+        /**
+     * Copy an email to another mailbox
+     *
+     * @param *number $uid     The mail unique ID
+     * @param *string $mailbox The mailbox destination
+     *
+     * @return Eden\Mail\Imap
+     */
+    public function copy($uid, $mailbox)
     {
         Argument::i()->test(1, 'int', 'string')->test(2, 'string');
 
