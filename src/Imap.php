@@ -221,6 +221,7 @@ class Imap extends Base
     public function disconnect()
     {
         if ($this->socket) {
+            $this->send('CLOSE');
             $this->send('LOGOUT');
 
             fclose($this->socket);
