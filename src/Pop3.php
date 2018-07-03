@@ -245,6 +245,7 @@ class Pop3 extends Base
             ->test(2, 'int');
 
         $total = $this->getEmailTotal();
+        $total = $total['messages'];
 
         if ($total == 0) {
             return array();
@@ -316,6 +317,7 @@ class Pop3 extends Base
 
         foreach ($msgno as $number) {
             $this->call('DELE '.$number);
+
         }
 
         return $this;
@@ -661,12 +663,15 @@ class Pop3 extends Base
     {
         //separate the head and the body
         list($head, $body) = preg_split("/\n\s*\n/", $content, 2);
+        //front()->output($head);
         //get the headers
         $head = $this->getHeaders($head);
         //if content type is not set
         if (!isset($head['content-type'])) {
             return $parts;
         }
+		
+		
 
         //split the content type
         if (is_array($head['content-type'])) {
@@ -694,7 +699,7 @@ class Pop3 extends Base
             $attr = explode('=', $attr, 2);
             if (count($attr) > 1) {
                 list($key, $value) = $attr;
-                $extra[strtolower($key)] = $value;
+                $extra[$key] = $value;
             }
             unset($extra[$i]);
         }
@@ -744,11 +749,18 @@ class Pop3 extends Base
             if (isset($extra['name'])) {
                 //add to parts
                 $parts['attachment'][$extra['name']][$type] = $body;
+				
+                /* To show embedded image we need CID and that comes with this x-attachment-id, require specially for gmail. */
+				if (isset($head['x-attachment-id']))              
+                	$parts['attachment'][$extra['name']]['x-attachment-id'] = $head['x-attachment-id'];
+				
             } else {
                 //it's just a regular body
                 //add to parts
                 $parts[$type] = $body;
             }
+			
+			
         }
         return $parts;
     }
