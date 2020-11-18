@@ -1093,7 +1093,7 @@ class Imap extends Base
                 //if there is email data
                 if (!empty($email)) {
                     //create the email format and add it to emails
-                    $emails[$uniqueId] = $this->getEmailFormat($email, $uniqueId, $flags);
+                    $emails[$uniqueId] = $this->getEmailFormat($email, $uniqueId, isset($flags) && is_array($flags) ? $flags : []);
 
                     //if all we want is the first one
                     if ($first) {
