@@ -34,47 +34,47 @@ class Pop3 extends Base
      * @var string $host The POP3 Host
      */
     protected $host = null;
-       
+
     /**
      * @var string|null $port The POP3 port
      */
     protected $port = null;
-       
+
     /**
      * @var bool $ssl Whether to use SSL
      */
     protected $ssl = false;
-       
+
     /**
      * @var bool $tls Whether to use TLS
      */
     protected $tls = false;
-       
+
     /**
      * @var string|null $username The mailbox user name
      */
     protected $username = null;
-       
+
     /**
      * @var string|null $password The mailbox password
      */
     protected $password = null;
-       
+
     /**
      * @var string|null $timestamp Default timestamp
      */
     protected $timestamp = null;
-       
+
     /**
      * @var [RESOURCE] $socket The socket connection
      */
     protected $socket = null;
-       
+
     /**
      * @var bool $loggedin If you are actually logged in
      */
     protected $loggedin = false;
-       
+
     /**
      * @var bool $debugging If true outputs the logs
      */
@@ -144,7 +144,21 @@ class Pop3 extends Base
         $errno  =  0;
         $errstr = '';
 
-        $this->socket = fsockopen($host, $this->port, $errno, $errstr, self::TIMEOUT);
+        //$this->socket = fsockopen($host, $this->port, $errno, $errstr, self::TIMEOUT);
+        $context = stream_context_create([
+            'ssl' => [
+                'verify_peer' => false,
+                'verify_peer_name' => false
+            ]
+        ]);
+
+        $this->socket = stream_socket_client($host.':'.$this->port,
+            $errno,
+            $errstr,
+            self::TIMEOUT,
+            STREAM_CLIENT_CONNECT,
+            $context
+        );
 
         if (!$this->socket) {
             //throw exception
@@ -329,7 +343,7 @@ class Pop3 extends Base
      *
      * @return string|false
      */
-    protected function call($command, $multiline = false)
+    public function call($command, $multiline = false)
     {
         if (!$this->send($command)) {
             return false;
