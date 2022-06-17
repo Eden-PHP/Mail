@@ -2,21 +2,94 @@
 
 namespace Eden\Mail;
 
-class Email
+use PhpImap\IncomingMailAttachment;
+
+class Email extends EdenEmailComponent
 {
     /**
      * Raw email structire getted by getEmailFormat()
      * @var array
      */
     protected $structure;
+    /**
+     * Raw email headers
+     * @var EmailHeaders
+     */
+    protected $headers;
+    /**
+     * @var int
+     */
+    protected $id;
 
-    public function __get($name)
+    protected $body;
+
+    /**
+     * @var IncomingMailAttachment[]
+     */
+    protected $attachments = [];
+
+    /** @var bool */
+    protected $hasAttachments = false;
+
+    /** @var string|null */
+    private $textPlain;
+
+    /** @var string|null */
+    private $textHtml;
+
+    /** @var string|null */
+    private $textApplication;
+
+    public function __construct(array $structure = null)
     {
-        $methodCandidate = 'get'.ucfirst($name);
-        if(method_exists($this, $methodCandidate)){
-            return $this->$methodCandidate();
+        if($structure){
+            $this->parseStructure($structure);
         }
-        return null;
+    }
+
+    protected function parseStructure(array $structure)
+    {
+        $this->createHeadersFromRaw($structure);
+        $this->createBodyPartsFromRaw($structure);
+        $this->createAttachmentsFromRaw($structure);
+    }
+
+    protected function createBodyPartsFromRaw($structure)
+    {
+        $this->textPlain = $structure['body']['text/plain'] ?? null;
+        $this->textHtml = $structure['body']['text/html'] ?? null;
+    }
+
+    protected function createAttachmentsFromRaw(array $structure)
+    {
+
+    }
+
+    protected function createHeadersFromRaw(array $structure)
+    {
+        $this->headers = new EmailHeaders(
+            array_diff_key($structure, array_flip([
+                'body',
+                'attachment',
+                'attachments',
+            ]))
+        );
+    }
+
+    public function setId(int $id) : self
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+    public function getId():int
+    {
+        return $this->id;
+    }
+
+    public function getHeaders()
+    {
+        return $this->headers;
     }
 
     public function setStructure(array $structure)
@@ -26,21 +99,26 @@ class Email
 
     public function getAttachments()
     {
-
+        return $this->attachments;
     }
 
-    public function getTextHtml()
+    public function getTextHtml() : ?string
     {
-
+        return $this->textHtml;
     }
 
-    public function getTextApplication()
+    public function getTextPlain() : ?string
     {
+        return $this->textPlain;
+    }
 
+    public function getTextApplication() :?string
+    {
+        return $this->textApplication;
     }
 
     public function setTrimInfoPartsData(bool $val)
     {
-        return null;
+        // mute
     }
 }
