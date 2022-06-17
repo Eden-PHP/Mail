@@ -62,7 +62,25 @@ class Email extends EdenEmailComponent
 
     protected function createAttachmentsFromRaw(array $structure)
     {
+        $rawAttachmens = $structure['attachment'] ?? [];
 
+        foreach ($rawAttachmens as $filename => $attachment) {
+            $attachment = array_filter($attachment);
+            if (empty($attachment)) {
+                continue;
+            }
+
+            $mime = array_key_first($attachment);
+            $incomingMailAttachment = new IncomingMailAttachment();
+            $incomingMailAttachment->id = \bin2hex(\random_bytes(20));
+            $incomingMailAttachment->name = $filename;
+            $incomingMailAttachment->mime = $mime;
+            $incomingMailAttachment->fileExtension = pathinfo($filename, PATHINFO_EXTENSION);
+
+            $incomingMailAttachment->setFileContent($attachment[$mime]);
+
+            $this->attachments[] = $incomingMailAttachment;
+        }
     }
 
     protected function createHeadersFromRaw(array $structure)
