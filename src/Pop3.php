@@ -9,6 +9,8 @@
 
 namespace Eden\Mail;
 
+use Eden\Mail\Email;
+
 /**
  * General available methods for common POP3 functionality
  *
@@ -34,47 +36,47 @@ class Pop3 extends Base
      * @var string $host The POP3 Host
      */
     protected $host = null;
-       
+
     /**
      * @var string|null $port The POP3 port
      */
     protected $port = null;
-       
+
     /**
      * @var bool $ssl Whether to use SSL
      */
     protected $ssl = false;
-       
+
     /**
      * @var bool $tls Whether to use TLS
      */
     protected $tls = false;
-       
+
     /**
      * @var string|null $username The mailbox user name
      */
     protected $username = null;
-       
+
     /**
      * @var string|null $password The mailbox password
      */
     protected $password = null;
-       
+
     /**
      * @var string|null $timestamp Default timestamp
      */
     protected $timestamp = null;
-       
+
     /**
      * @var [RESOURCE] $socket The socket connection
      */
     protected $socket = null;
-       
+
     /**
      * @var bool $loggedin If you are actually logged in
      */
     protected $loggedin = false;
-       
+
     /**
      * @var bool $debugging If true outputs the logs
      */
@@ -87,8 +89,8 @@ class Pop3 extends Base
      * @param *string  $user The mailbox user name
      * @param *string  $pass The mailbox password
      * @param int|null $port The POP3 port
-     * @param bool     $ssl  Whether to use SSL
-     * @param bool     $tls  Whether to use TLS
+     * @param bool $ssl Whether to use SSL
+     * @param bool $tls Whether to use TLS
      */
     public function __construct(
         $host,
@@ -97,7 +99,8 @@ class Pop3 extends Base
         $port = null,
         $ssl = false,
         $tls = false
-    ) {
+    )
+    {
         Argument::i()
             ->test(1, 'string')
             ->test(2, 'string')
@@ -141,16 +144,30 @@ class Pop3 extends Base
             $host = 'ssl://' . $host;
         }
 
-        $errno  =  0;
+        $errno = 0;
         $errstr = '';
 
-        $this->socket = fsockopen($host, $this->port, $errno, $errstr, self::TIMEOUT);
+        //$this->socket = fsockopen($host, $this->port, $errno, $errstr, self::TIMEOUT);
+        $context = stream_context_create([
+            'ssl' => [
+                'verify_peer' => false,
+                'verify_peer_name' => false
+            ]
+        ]);
+
+        $this->socket = stream_socket_client($host . ':' . $this->port,
+            $errno,
+            $errstr,
+            self::TIMEOUT,
+            STREAM_CLIENT_CONNECT,
+            $context
+        );
 
         if (!$this->socket) {
             //throw exception
             Exception::i()
                 ->setMessage(Exception::SERVER_ERROR)
-                ->addVariable($host.':'.$this->port)
+                ->addVariable($host . ':' . $this->port)
                 ->trigger();
         }
 
@@ -175,7 +192,7 @@ class Pop3 extends Base
                 //throw exception
                 Exception::i()
                     ->setMessage(Exception::TLS_ERROR)
-                    ->addVariable($host.':'.$this->port)
+                    ->addVariable($host . ':' . $this->port)
                     ->trigger();
             }
         }
@@ -189,7 +206,7 @@ class Pop3 extends Base
         if ($this->timestamp) {
             try {
                 $this->call(
-                    'APOP '.$this->username
+                    'APOP ' . $this->username
                     . ' '
                     . md5($this->timestamp . $this->password)
                 );
@@ -199,8 +216,8 @@ class Pop3 extends Base
             }
         }
 
-        $this->call('USER '.$this->username);
-        $this->call('PASS '.$this->password);
+        $this->call('USER ' . $this->username);
+        $this->call('PASS ' . $this->password);
 
         $this->loggedin = true;
 
@@ -274,7 +291,7 @@ class Pop3 extends Base
 
         $emails = array();
         for ($i = $min; $i <= $max; $i++) {
-            $emails[] = $this->getEmailFormat($this->call('RETR '.$i, true));
+            $emails[] = $this->getEmailFormat($this->call('RETR ' . $i, true));
         }
 
         return $emails;
@@ -285,12 +302,12 @@ class Pop3 extends Base
      *
      * @return number
      */
-    public function getEmailTotal()
+    public function getEmailTotal() : int
     {
         @list($messages, $octets) = explode(' ', $this->call('STAT'));
         $messages = is_numeric($messages) ? $messages : 0;
 
-        return $messages;
+        return (int)$messages;
     }
 
     /**
@@ -315,7 +332,7 @@ class Pop3 extends Base
         }
 
         foreach ($msgno as $number) {
-            $this->call('DELE '.$number);
+            $this->call('DELE ' . $number);
         }
 
         return $this;
@@ -325,11 +342,11 @@ class Pop3 extends Base
      * Send it out and return the response
      *
      * @param *string $command   The raw POP3 command
-     * @param bool    $multiline Whether to expect a multiline response
+     * @param bool $multiline Whether to expect a multiline response
      *
      * @return string|false
      */
-    protected function call($command, $multiline = false)
+    public function call($command, $multiline = false)
     {
         if (!$this->send($command)) {
             return false;
@@ -366,7 +383,7 @@ class Pop3 extends Base
                 if ($line[0] == '.') {
                     $line = substr($line, 1);
                 }
-                $this->debug('Receiving: '.$line);
+                $this->debug('Receiving: ' . $line);
                 $message .= $line;
                 $line = fgets($this->socket);
             };
@@ -384,7 +401,7 @@ class Pop3 extends Base
      */
     protected function send($command)
     {
-        $this->debug('Sending: '.$command);
+        $this->debug('Sending: ' . $command);
 
         return fputs($this->socket, $command . "\r\n");
     }
@@ -402,7 +419,7 @@ class Pop3 extends Base
             $string = htmlspecialchars($string);
 
 
-            echo '<pre>'.$string.'</pre>'."\n";
+            echo '<pre>' . $string . '</pre>' . "\n";
         }
         return $this;
     }
@@ -412,7 +429,7 @@ class Pop3 extends Base
      * response to array key value format
      *
      * @param *string $email The actual email
-     * @param array   $flags Any mail flags
+     * @param array $flags Any mail flags
      *
      * @return array
      */
@@ -437,7 +454,7 @@ class Pop3 extends Base
         $head = array();
         foreach ($lines as $line) {
             if (trim($line) && preg_match("/^\s+/", $line)) {
-                $head[count($head)-1] .= ' '.trim($line);
+                $head[count($head) - 1] .= ' ' . trim($line);
                 continue;
             }
 
@@ -449,8 +466,8 @@ class Pop3 extends Base
         $recipientsTo = $recipientsCc = $recipientsBcc = $sender = array();
 
         //get the headers
-        $headers1   = imap_rfc822_parse_headers($head);
-        $headers2   = $this->getHeaders($head);
+        $headers1 = imap_rfc822_parse_headers($head);
+        $headers2 = $this->getHeaders($head);
 
         //set the from
         $sender['name'] = null;
@@ -472,7 +489,7 @@ class Pop3 extends Base
                     continue;
                 }
 
-                $recipient = array('name'=>null);
+                $recipient = array('name' => null);
                 if (isset($to->personal)) {
                     $recipient['name'] = $to->personal;
                     //if the name is iso or utf encoded
@@ -491,7 +508,7 @@ class Pop3 extends Base
         //set the cc
         if (isset($headers1->cc)) {
             foreach ($headers1->cc as $cc) {
-                $recipient = array('name'=>null);
+                $recipient = array('name' => null);
                 if (isset($cc->personal)) {
                     $recipient['name'] = $cc->personal;
 
@@ -511,7 +528,7 @@ class Pop3 extends Base
         //set the bcc
         if (isset($headers1->bcc)) {
             foreach ($headers1->bcc as $bcc) {
-                $recipient = array('name'=>null);
+                $recipient = array('name' => null);
                 if (isset($bcc->personal)) {
                     $recipient['name'] = $bcc->personal;
                     //if the name is iso or utf encoded
@@ -543,7 +560,7 @@ class Pop3 extends Base
         }
 
         //set thread details
-        $topic  = isset($headers2['thread-topic']) ? $headers2['thread-topic'] : $headers1->subject;
+        $topic = isset($headers2['thread-topic']) ? $headers2['thread-topic'] : $headers1->subject;
         $parent = isset($headers2['in-reply-to']) ? str_replace('"', '', $headers2['in-reply-to']) : null;
 
         //set date
@@ -553,25 +570,25 @@ class Pop3 extends Base
         if (isset($headers2['message-id'])) {
             $messageId = str_replace('"', '', $headers2['message-id']);
         } else {
-            $messageId = '<eden-no-id-'.md5(uniqid()).'>';
+            $messageId = '<eden-no-id-' . md5(uniqid()) . '>';
         }
 
         $attachment = isset($headers2['content-type'])
             && strpos($headers2['content-type'], 'multipart/mixed') === 0;
 
         $format = array(
-            'id'            => $messageId,
-            'parent'        => $parent,
-            'topic'         => $topic,
-            'mailbox'       => 'INBOX',
-            'date'          => $date,
-            'subject'       => str_replace('’', '\'', $headers1->subject),
-            'from'          => $sender,
-            'flags'         => $flags,
-            'to'            => $recipientsTo,
-            'cc'            => $recipientsCc,
-            'bcc'           => $recipientsBcc,
-            'attachment'    => $attachment);
+            'id' => $messageId,
+            'parent' => $parent,
+            'topic' => $topic,
+            'mailbox' => 'INBOX',
+            'date' => $date,
+            'subject' => str_replace('’', '\'', $headers1->subject),
+            'from' => $sender,
+            'flags' => $flags,
+            'to' => $recipientsTo,
+            'cc' => $recipientsCc,
+            'bcc' => $recipientsBcc,
+            'attachment' => $attachment);
 
         if (trim($body) && $body != ')') {
             //get the body parts
@@ -595,8 +612,8 @@ class Pop3 extends Base
                 unset($body['attachment']);
             }
 
-            $format['body']         = $body;
-            $format['attachment']   = $attachment;
+            $format['body'] = $body;
+            $format['attachment'] = $attachment;
         }
 
         return $format;
@@ -637,11 +654,11 @@ class Pop3 extends Base
 
             if (!is_null($key) && isset($headers[$key])) {
                 if (is_array($headers[$key])) {
-                    $headers[$key][count($headers[$key])-1] .= ' '.$line;
+                    $headers[$key][count($headers[$key]) - 1] .= ' ' . $line;
                     continue;
                 }
 
-                $headers[$key] .= ' '.$line;
+                $headers[$key] .= ' ' . $line;
             }
         }
 
@@ -653,7 +670,7 @@ class Pop3 extends Base
      * ie. plain, HTML, attachment
      *
      * @param string $content The content to parse
-     * @param array  $parts   The existing parts
+     * @param array $parts The existing parts
      *
      * @return array
      */
@@ -702,7 +719,7 @@ class Pop3 extends Base
         //if a boundary is set
         if (isset($extra['boundary'])) {
             //split the body into sections
-            $sections = explode('--'.str_replace(array('"', "'"), '', $extra['boundary']), $body);
+            $sections = explode('--' . str_replace(array('"', "'"), '', $extra['boundary']), $body);
             //we only want what's in the middle of these sections
             array_pop($sections);
             array_shift($sections);
@@ -751,5 +768,36 @@ class Pop3 extends Base
             }
         }
         return $parts;
+    }
+
+    /**
+     * @param int $length
+     * @return array
+     */
+    public function getLastMailIds($length = 30) :array
+    {
+        $total = $this->getEmailTotal();
+        $start = $total > $length ? $total - $length : 1;
+        return range($start, $total);
+    }
+
+    /**
+     * @param int $id
+     * @return Email
+     */
+    public function getMail(int $id) : Email
+    {
+        $structure = $this->getEmailFormat($this->call('RETR ' . $id, true));
+        if(!$structure){
+            return false;
+        }
+        $email = new Email($structure);
+        $email->setId($id);
+        return $email;
+    }
+
+    public function markMailsAsRead(array $mailIds)
+    {
+        // POP3 is not supports this feature
     }
 }
