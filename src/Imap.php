@@ -1150,7 +1150,7 @@ class Imap extends Base
             }
 
             //if there is a tag it means we are at the end
-            if (strpos($line, 'TAG'.$this->tag) !== false) {
+            if (strpos($line, 'TAG'.$this->tag) === 0) {
                 //if email details are not empty and the last line is just a )
                 if (!empty($email) && strpos(trim($email[count($email) -1]), ')') === 0) {
                     //take it out because that is not part of the details
