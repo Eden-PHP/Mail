@@ -1340,6 +1340,19 @@ class Imap extends Base
             if (isset($extra['name'])) {
                 //add to parts
                 $parts['attachment'][$extra['name']][$type] = $body;
+            } elseif (isset($head['content-disposition']) && strpos($head['content-disposition'],'attachment')===0) {
+                //add to parts
+                //split the content type
+                $filename=null;
+                if (is_string($head['content-disposition'])&&strpos($head['content-disposition'],'filename=')!==false) {
+                        if(preg_match("/filename=([^;]*)/",$head['content-disposition'],$matches)) {
+                                $filename=$matches[1];
+                        }
+                }
+                if($filename)
+                        $parts['attachment'][$filename][$type] = $body;
+                else
+                        $parts['attachment'][][$type] = $body;
             } else {
                 //it's just a regular body
                 //add to parts
