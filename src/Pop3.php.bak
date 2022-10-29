@@ -117,27 +117,7 @@ class Pop3 extends Base
         $this->ssl = $ssl;
         $this->tls = $tls;
 
-    }
-
-    /**
-     * 检验tcp连接的连通性
-     * @return bool  true  tcp连接正常，tcp连接失败
-     * @throws
-     */
-    public function checkTcpCon(){
-
-        if(!$this->socket){
-            return false;
-        }
-
-        try{
-            $this->call('NOOP');
-        }catch (Exception $e){
-            return false;
-        }
-
-        //通的
-        return true;
+        $this->connect();
     }
 
     /**
@@ -164,17 +144,7 @@ class Pop3 extends Base
         $errno  =  0;
         $errstr = '';
 
-        //$this->socket = fsockopen($host, $this->port, $errno, $errstr, self::TIMEOUT);
-
-   
-        $contextOptions = array(
-            'ssl' => array(
-                'verify_peer' => false,
-                'verify_peer_name' => false
-            )
-        );
-        $context = stream_context_create($contextOptions);
-        $this->socket = stream_socket_client($host.':'.$this->port, $errno, $errstr, self::TIMEOUT,STREAM_CLIENT_CONNECT,$context);
+        $this->socket = fsockopen($host, $this->port, $errno, $errstr, self::TIMEOUT);
 
         if (!$this->socket) {
             //throw exception
@@ -237,107 +207,6 @@ class Pop3 extends Base
         return $this;
     }
 
-    public function createConnect() {
-
-
-        if ($this->loggedin) {
-            return $this;
-        }
-
-        $host = $this->host;
-
-        if ($this->ssl) {
-            $host = 'ssl://' . $host;
-        }
-
-        $errno  =  0;
-        $errstr = '';
-
-        //$this->socket = fsockopen($host, $this->port, $errno, $errstr, self::TIMEOUT);
-
-        //znl
-        $contextOptions = array(
-            'ssl' => array(
-                'verify_peer' => false,
-                'verify_peer_name' => false
-            )
-        );
-        $context = stream_context_create($contextOptions);
-        $this->socket = stream_socket_client($host.':'.$this->port, $errno, $errstr, self::TIMEOUT,STREAM_CLIENT_CONNECT,$context);
-
-        if (!$this->socket) {
-            //throw exception
-            Exception::i()
-                ->setMessage(Exception::SERVER_ERROR)
-                ->addVariable($host.':'.$this->port)
-                ->trigger();
-        }
-
-        $welcome = $this->receive();
-
-        // $welcome."\n";
-
-        strtok($welcome, '<');
-        $this->timestamp = strtok('>');
-        if (!strpos($this->timestamp, '@')) {
-            $this->timestamp = null;
-        } else {
-            $this->timestamp = '<' . $this->timestamp . '>';
-        }
-
-        if ($this->tls) {
-            $this->call('STLS');
-            if (!stream_socket_enable_crypto(
-                $this->socket,
-                true,
-                STREAM_CRYPTO_METHOD_TLS_CLIENT
-            )) {
-                $this->disconnect();
-                //throw exception
-                Exception::i()
-                    ->setMessage(Exception::TLS_ERROR)
-                    ->addVariable($host.':'.$this->port)
-                    ->trigger();
-            }
-        }
-
-
-        return $this;
-    }
-
-    public function login(){
-        //login
-        if ($this->timestamp) {
-            try {
-                $this->call(
-                    'APOP '.$this->username
-                    . ' '
-                    . md5($this->timestamp . $this->password)
-                );
-                return;
-            } catch (Argument $e) {
-                // ignore
-            }
-        }
-        $this->call('USER '.$this->username);
-        $this->call('PASS '.$this->password);
-
-        $this->loggedin = true;
-
-        $this->total=$this->getEmailTotal();
-
-        return $this;
-    }
-
-    public function statusMailbox(){
-        @list($messages, $octets) = explode(' ', $this->call('STAT'));
-        $messages = is_numeric($messages) ? $messages : 0;
-        print_r($messages);
-        echo $this->total;
-
-        return ['messages'=>$messages,'uidvalidity'=>1,'uidnext'=>0];
-    }
-
     /**
      * Disconnects from the server
      *
@@ -350,7 +219,6 @@ class Pop3 extends Base
         }
 
         try {
-            $this->send('RSET');
             $this->send('QUIT');
         } catch (Argument $e) {
             // ignore error - we're closing the socket anyway
@@ -884,114 +752,4 @@ class Pop3 extends Base
         }
         return $parts;
     }
-
-
-    public function expunge(){
-        return true;
-    }
-
-    #region 新增
-
-
-    /**
-     * Returns if the socket is alive
-     *
-     * @return bool|string 'pong' for alive , false for broken
-     * @throws \Eden\Core\Exception
-     * @author znl
-     *
-     */
-    public function ping(){
-        $result=$this->call("NOOP");//NO OPERATION
-        if($result===false){
-            Exception::i("Ping [NOOP] %s Response Status is not 'OK'",10001)
-                ->addVariable($this->host.':'.$this->port)
-                ->trigger();
-        }
-        return "pong";
-    }
-
-    public function getMailboxes(){
-        return ["INBOX"];
-    }
-    public function setActiveMailbox($mailbox){
-        return true;
-    }
-
-    /**
-     * 为了兼容imap
-     * @return bool
-     */
-    public function selectMailbox(){
-        if (!$this->checkTcpCon()) {
-            $this->connect();
-        }
-        return true;
-    }
-    public function getActiveMailbox(){
-        return "INBOX";
-    }
-
-    public function fetch(){
-        return $this->getUIDs();
-    }
-
-    public function getUIDs()
-    {
-
-        //if the total in this mailbox is 0
-        //it means they probably didn't select a mailbox
-        //or the mailbox selected is empty
-        if ($this->total == 0) {
-            return [];
-        }
-
-
-        //now lets call this
-        $response = $this->call("UIDL",true);
-        $response=explode("\r\n", $response);
-        $uids=[];
-        foreach ($response as $line){
-            $line=trim($line);
-            if($line===""){
-                continue;
-            }
-            list($id,$uid)=explode(" ",trim($line));
-            $uids[]=array_merge(compact('id','uid'),['time'=>0]);
-        }
-
-        return $uids;
-    }
-
-    /**
-     * Returns a list of emails given a uid or set of uid
-     *
-     * @param *number|array $uid  A list of uid/s
-     *
-     * @return array
-     * @throws \Eden\Core\Exception
-     * @author znl
-     */
-    public function downloadEmailByUniqueId($uid)
-    {
-        Argument::i()
-            ->test(1, 'int', 'string', 'array')
-            ->test(2, 'bool');
-
-        return $this->_getEmailResponse($uid);
-    }
-
-    private function _getEmailResponse($uid){
-
-       $email= $this->call('RETR '.$uid, true);
-        $store_path=$this->store_dir.$this->username.'/INBOX/'.$uid.'.eml';
-        if (!is_dir(dirname($store_path))) {
-            mkdir(dirname($store_path),0755,true);
-        }
-       return file_put_contents($store_path,$email);
-    }
-
-    #endregion
-
-
 }
