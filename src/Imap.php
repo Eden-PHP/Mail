@@ -1150,7 +1150,7 @@ class Imap extends Base
             }
 
             //if there is a tag it means we are at the end
-            if (strpos($line, 'TAG'.$this->tag) !== false) {
+            if (strpos($line, 'TAG'.$this->tag) === 0) {
                 //if email details are not empty and the last line is just a )
                 if (!empty($email) && strpos(trim($email[count($email) -1]), ')') === 0) {
                     //take it out because that is not part of the details
@@ -1340,6 +1340,19 @@ class Imap extends Base
             if (isset($extra['name'])) {
                 //add to parts
                 $parts['attachment'][$extra['name']][$type] = $body;
+            } elseif (isset($head['content-disposition']) && strpos($head['content-disposition'],'attachment')===0) {
+                //add to parts
+                //split the content type
+                $filename=null;
+                if (is_string($head['content-disposition'])&&strpos($head['content-disposition'],'filename=')!==false) {
+                        if(preg_match("/filename=([^;]*)/",$head['content-disposition'],$matches)) {
+                                $filename=$matches[1];
+                        }
+                }
+                if($filename)
+                        $parts['attachment'][$filename][$type] = $body;
+                else
+                        $parts['attachment'][][$type] = $body;
             } else {
                 //it's just a regular body
                 //add to parts
