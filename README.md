@@ -15,7 +15,7 @@
 <a name="install"></a>
 ## Install
 
-`composer install eden/mail`
+`composer require eden/mail`
 
 In order to use
 
